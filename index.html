@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Bolão Copa 2026 - Primeira Rodada (com Resultados)</title>
+    <title>Bolão Copa 2026 - Primeira Rodada Completa</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 48px;
@@ -145,40 +145,66 @@
             background: #7f8c8d;
         }
 
-        .grupo-section {
+        .dia-section {
             margin-bottom: 30px;
+            background: #f9f9f9;
+            border-radius: 32px;
+            margin: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        .grupo-titulo {
+        .dia-titulo {
             background: #1a472a;
             color: #ffcc00;
-            padding: 12px 24px;
-            font-size: 1.5rem;
+            padding: 14px 24px;
+            font-size: 1.4rem;
             font-weight: bold;
-            border-radius: 60px;
-            margin: 20px 20px 15px 20px;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .dia-titulo .data {
+            background: #ffcc00;
+            color: #1a472a;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 1rem;
         }
 
         .jogos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 20px;
-            padding: 0 24px 24px 24px;
+            gap: 16px;
+            padding: 20px;
         }
 
         .jogo-card {
             background: linear-gradient(135deg, #fefaf0 0%, #fff6e5 100%);
-            border-radius: 28px;
-            padding: 20px;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            border-radius: 24px;
+            padding: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
             border: 1px solid #ffe0a3;
             transition: transform 0.2s;
         }
 
         .jogo-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .horario-grupo {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: #c0392b;
+            font-weight: 600;
+            background: #ffecb3;
+            padding: 6px 12px;
+            border-radius: 40px;
         }
 
         .times {
@@ -186,7 +212,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
         }
 
@@ -198,30 +224,31 @@
             border-radius: 60px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .vs {
             background: #ffcc00;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 40px;
             font-weight: bold;
             color: #1a472a;
+            font-size: 0.9rem;
         }
 
         .resultado-area {
             background: #ffffff;
-            border-radius: 24px;
-            padding: 15px;
+            border-radius: 20px;
+            padding: 12px;
             margin-top: 5px;
         }
 
         .resultado-label {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #2c5e2d;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: block;
         }
 
@@ -229,7 +256,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
@@ -238,16 +265,16 @@
         }
 
         .input-gol label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #555;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .input-gol input {
-            width: 70px;
-            padding: 10px;
-            font-size: 1.2rem;
+            width: 65px;
+            padding: 8px;
+            font-size: 1.1rem;
             text-align: center;
             font-weight: bold;
             border: 2px solid #ddd;
@@ -261,18 +288,18 @@
         }
 
         .traco {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #1a472a;
         }
 
         .vencedor-preview {
-            margin-top: 12px;
-            padding: 8px;
+            margin-top: 10px;
+            padding: 6px;
             background: #e8f0e3;
             border-radius: 40px;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #1a472a;
         }
@@ -300,8 +327,8 @@
         }
 
         .status-icon {
-            font-size: 0.9rem;
-            margin-left: 8px;
+            font-size: 0.8rem;
+            margin-left: 6px;
         }
     </style>
 </head>
@@ -310,7 +337,7 @@
     <div class="header">
         <h1>⚽ BOLÃO COPA 2026 <span>PRIMEIRA RODADA</span></h1>
         <div class="sub">Palpite com resultado EXATO (gols) de cada jogo</div>
-        <div class="badge-rodada">📅 Fase de Grupos - 16 jogos • Marque o placar!</div>
+        <div class="badge-rodada">📅 11 a 17 de Junho • 24 jogos • Marque o placar!</div>
     </div>
 
     <div class="participant-area">
@@ -327,44 +354,51 @@
     <div id="palpitesContainer"></div>
 
     <div class="resumo-area" id="resumoPreview">
-        <strong>📋 Resumo:</strong> Preencha os placares (gols de cada time) para todos os jogos.
+        <strong>📋 Resumo:</strong> Preencha os placares (gols de cada time) para todos os 24 jogos.
     </div>
 
     <footer>⚽ Placar exato vale mais pontos! Digite os gols de cada equipe. O PDF gerado terá todos os seus palpites.</footer>
 </div>
 
 <script>
-    // ----- JOGOS DA PRIMEIRA RODADA (16 jogos) -----
+    // ----- JOGOS DA PRIMEIRA RODADA (24 jogos - conforme tabela fornecida) -----
     const JOGOS_PRIMEIRA_RODADA = [
-        // Grupo A
-        { id: "A1", grupo: "A", timeCasa: "Brasil", timeFora: "Suíça", golsCasa: "", golsFora: "" },
-        { id: "A2", grupo: "A", timeCasa: "Canadá", timeFora: "Camarões", golsCasa: "", golsFora: "" },
-        // Grupo B
-        { id: "B1", grupo: "B", timeCasa: "Argentina", timeFora: "Dinamarca", golsCasa: "", golsFora: "" },
-        { id: "B2", grupo: "B", timeCasa: "Egito", timeFora: "Austrália", golsCasa: "", golsFora: "" },
-        // Grupo C
-        { id: "C1", grupo: "C", timeCasa: "França", timeFora: "Sérvia", golsCasa: "", golsFora: "" },
-        { id: "C2", grupo: "C", timeCasa: "Peru", timeFora: "Japão", golsCasa: "", golsFora: "" },
-        // Grupo D
-        { id: "D1", grupo: "D", timeCasa: "Inglaterra", timeFora: "Croácia", golsCasa: "", golsFora: "" },
-        { id: "D2", grupo: "D", timeCasa: "EUA", timeFora: "Gana", golsCasa: "", golsFora: "" },
-        // Grupo E
-        { id: "E1", grupo: "E", timeCasa: "Espanha", timeFora: "Alemanha", golsCasa: "", golsFora: "" },
-        { id: "E2", grupo: "E", timeCasa: "Marrocos", timeFora: "Coreia do Sul", golsCasa: "", golsFora: "" },
-        // Grupo F
-        { id: "F1", grupo: "F", timeCasa: "Portugal", timeFora: "Holanda", golsCasa: "", golsFora: "" },
-        { id: "F2", grupo: "F", timeCasa: "Senegal", timeFora: "Arábia Saudita", golsCasa: "", golsFora: "" },
-        // Grupo G
-        { id: "G1", grupo: "G", timeCasa: "Bélgica", timeFora: "Uruguai", golsCasa: "", golsFora: "" },
-        { id: "G2", grupo: "G", timeCasa: "México", timeFora: "Nigéria", golsCasa: "", golsFora: "" },
-        // Grupo H
-        { id: "H1", grupo: "H", timeCasa: "Colômbia", timeFora: "Polônia", golsCasa: "", golsFora: "" },
-        { id: "H2", grupo: "H", timeCasa: "Equador", timeFora: "Suécia", golsCasa: "", golsFora: "" }
+        // 11/06 - Quinta
+        { id: "J01", dia: "11/06 (Qui)", horario: "16h", grupo: "A", timeCasa: "México", timeFora: "África do Sul", golsCasa: "", golsFora: "" },
+        { id: "J02", dia: "11/06 (Qui)", horario: "23h", grupo: "A", timeCasa: "Coreia do Sul", timeFora: "República Tcheca", golsCasa: "", golsFora: "" },
+        // 12/06 - Sexta
+        { id: "J03", dia: "12/06 (Sex)", horario: "16h", grupo: "B", timeCasa: "Canadá", timeFora: "Bósnia", golsCasa: "", golsFora: "" },
+        { id: "J04", dia: "12/06 (Sex)", horario: "22h", grupo: "D", timeCasa: "Estados Unidos", timeFora: "Paraguai", golsCasa: "", golsFora: "" },
+        // 13/06 - Sábado
+        { id: "J05", dia: "13/06 (Sáb)", horario: "16h", grupo: "B", timeCasa: "Catar", timeFora: "Suíça", golsCasa: "", golsFora: "" },
+        { id: "J06", dia: "13/06 (Sáb)", horario: "19h", grupo: "C", timeCasa: "Brasil", timeFora: "Marrocos", golsCasa: "", golsFora: "" },
+        { id: "J07", dia: "13/06 (Sáb)", horario: "22h", grupo: "C", timeCasa: "Haiti", timeFora: "Escócia", golsCasa: "", golsFora: "" },
+        // 14/06 - Domingo
+        { id: "J08", dia: "14/06 (Dom)", horario: "1h", grupo: "D", timeCasa: "Austrália", timeFora: "Turquia", golsCasa: "", golsFora: "" },
+        { id: "J09", dia: "14/06 (Dom)", horario: "14h", grupo: "E", timeCasa: "Alemanha", timeFora: "Curaçao", golsCasa: "", golsFora: "" },
+        { id: "J10", dia: "14/06 (Dom)", horario: "17h", grupo: "F", timeCasa: "Holanda", timeFora: "Japão", golsCasa: "", golsFora: "" },
+        { id: "J11", dia: "14/06 (Dom)", horario: "20h", grupo: "E", timeCasa: "Costa do Marfim", timeFora: "Equador", golsCasa: "", golsFora: "" },
+        { id: "J12", dia: "14/06 (Dom)", horario: "23h", grupo: "F", timeCasa: "Suécia", timeFora: "Tunísia", golsCasa: "", golsFora: "" },
+        // 15/06 - Segunda
+        { id: "J13", dia: "15/06 (Seg)", horario: "13h", grupo: "H", timeCasa: "Espanha", timeFora: "Cabo Verde", golsCasa: "", golsFora: "" },
+        { id: "J14", dia: "15/06 (Seg)", horario: "16h", grupo: "G", timeCasa: "Bélgica", timeFora: "Egito", golsCasa: "", golsFora: "" },
+        { id: "J15", dia: "15/06 (Seg)", horario: "19h", grupo: "H", timeCasa: "Arábia Saudita", timeFora: "Uruguai", golsCasa: "", golsFora: "" },
+        { id: "J16", dia: "15/06 (Seg)", horario: "22h", grupo: "G", timeCasa: "Irã", timeFora: "Nova Zelândia", golsCasa: "", golsFora: "" },
+        // 16/06 - Terça
+        { id: "J17", dia: "16/06 (Ter)", horario: "16h", grupo: "I", timeCasa: "França", timeFora: "Senegal", golsCasa: "", golsFora: "" },
+        { id: "J18", dia: "16/06 (Ter)", horario: "19h", grupo: "I", timeCasa: "Iraque", timeFora: "Noruega", golsCasa: "", golsFora: "" },
+        { id: "J19", dia: "16/06 (Ter)", horario: "22h", grupo: "J", timeCasa: "Argentina", timeFora: "Argélia", golsCasa: "", golsFora: "" },
+        // 17/06 - Quarta
+        { id: "J20", dia: "17/06 (Qua)", horario: "1h", grupo: "J", timeCasa: "Áustria", timeFora: "Jordânia", golsCasa: "", golsFora: "" },
+        { id: "J21", dia: "17/06 (Qua)", horario: "14h", grupo: "K", timeCasa: "Portugal", timeFora: "RD Congo", golsCasa: "", golsFora: "" },
+        { id: "J22", dia: "17/06 (Qua)", horario: "17h", grupo: "L", timeCasa: "Inglaterra", timeFora: "Croácia", golsCasa: "", golsFora: "" },
+        { id: "J23", dia: "17/06 (Qua)", horario: "20h", grupo: "L", timeCasa: "Gana", timeFora: "Panamá", golsCasa: "", golsFora: "" },
+        { id: "J24", dia: "17/06 (Qua)", horario: "23h", grupo: "K", timeCasa: "Uzbequistão", timeFora: "Colômbia", golsCasa: "", golsFora: "" }
     ];
 
     // Carregar dados do localStorage
     function carregarPalpites() {
-        const saved = localStorage.getItem("bolaoprimeirarodada_placar");
+        const saved = localStorage.getItem("bolaoprimeirarodada_placar_completo");
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -376,7 +410,7 @@
                 });
             } catch(e) {}
         }
-        const nomeSalvo = localStorage.getItem("bolaoprimeironome_placar");
+        const nomeSalvo = localStorage.getItem("bolaoprimeironome_placar_completo");
         if (nomeSalvo) document.getElementById("nomeParticipante").value = nomeSalvo;
     }
 
@@ -388,9 +422,9 @@
                 golsFora: jogo.golsFora
             };
         });
-        localStorage.setItem("bolaoprimeirarodada_placar", JSON.stringify(estado));
+        localStorage.setItem("bolaoprimeirarodada_placar_completo", JSON.stringify(estado));
         const nome = document.getElementById("nomeParticipante").value;
-        localStorage.setItem("bolaoprimeironome_placar", nome);
+        localStorage.setItem("bolaoprimeironome_placar_completo", nome);
         atualizarResumo();
     }
 
@@ -417,40 +451,55 @@
         }
     }
 
-    // Renderizar todos os jogos
+    // Renderizar todos os jogos agrupados por dia
     function renderizarBolao() {
         const container = document.getElementById("palpitesContainer");
         container.innerHTML = "";
 
-        // Agrupar por grupo
-        const grupos = {};
+        // Agrupar por dia
+        const dias = {};
         JOGOS_PRIMEIRA_RODADA.forEach(jogo => {
-            if (!grupos[jogo.grupo]) grupos[jogo.grupo] = [];
-            grupos[jogo.grupo].push(jogo);
+            if (!dias[jogo.dia]) dias[jogo.dia] = [];
+            dias[jogo.dia].push(jogo);
         });
 
-        const ordemGrupos = ["A", "B", "C", "D", "E", "F", "G", "H"];
-        for (let letra of ordemGrupos) {
-            const jogosGrupo = grupos[letra];
-            if (!jogosGrupo) continue;
+        const ordemDias = [
+            "11/06 (Qui)", "12/06 (Sex)", "13/06 (Sáb)", "14/06 (Dom)",
+            "15/06 (Seg)", "16/06 (Ter)", "17/06 (Qua)"
+        ];
 
-            const grupoDiv = document.createElement("div");
-            grupoDiv.className = "grupo-section";
-            grupoDiv.innerHTML = `<div class="grupo-titulo">GRUPO ${letra}</div>`;
+        for (let dia of ordemDias) {
+            const jogosDia = dias[dia];
+            if (!jogosDia) continue;
+
+            const diaDiv = document.createElement("div");
+            diaDiv.className = "dia-section";
+            
+            // Extrair só a data para exibição
+            const dataExtract = dia.split(" ")[0];
+            diaDiv.innerHTML = `
+                <div class="dia-titulo">
+                    📅 ${dia}
+                    <span class="data">${jogosDia.length} jogos</span>
+                </div>
+            `;
             
             const gridDiv = document.createElement("div");
             gridDiv.className = "jogos-grid";
             
-            jogosGrupo.forEach(jogo => {
+            jogosDia.forEach(jogo => {
                 const card = document.createElement("div");
                 card.className = "jogo-card";
                 card.dataset.id = jogo.id;
                 
-                // Preview do resultado atual
                 const resultadoPreview = obterResultadoTexto(jogo);
                 const resultadoClass = (jogo.golsCasa !== "" && jogo.golsFora !== "") ? "✅" : "⏳";
                 
                 card.innerHTML = `
+                    <div class="horario-grupo">
+                        <span>🕐 ${jogo.horario}</span>
+                        <span>🏆 Grupo ${jogo.grupo}</span>
+                    </div>
                     <div class="times">
                         <div class="time-casa">🏟️ <strong>${jogo.timeCasa}</strong></div>
                         <div class="vs">VS</div>
@@ -487,7 +536,6 @@
                     let golsCasaVal = inputCasa.value;
                     let golsForaVal = inputFora.value;
                     
-                    // Validar números
                     if (golsCasaVal !== "") {
                         let num = parseInt(golsCasaVal);
                         if (isNaN(num)) num = 0;
@@ -510,7 +558,6 @@
                         jogo.golsFora = "";
                     }
                     
-                    // Atualizar preview
                     const previewSpan = document.getElementById(`preview-${jogo.id}`);
                     if (previewSpan) {
                         previewSpan.innerHTML = obterResultadoTexto(jogo);
@@ -523,8 +570,8 @@
                 inputFora.addEventListener("input", atualizarJogo);
             });
             
-            grupoDiv.appendChild(gridDiv);
-            container.appendChild(grupoDiv);
+            diaDiv.appendChild(gridDiv);
+            container.appendChild(diaDiv);
         }
     }
 
@@ -543,40 +590,45 @@
             }
         }
         
-        // Criar elemento para o PDF
         const pdfContent = document.createElement("div");
         pdfContent.style.padding = "30px";
         pdfContent.style.fontFamily = "Arial, sans-serif";
         pdfContent.style.backgroundColor = "white";
         pdfContent.style.color = "#1a2e1a";
         
-        // Cabeçalho
         pdfContent.innerHTML = `
             <div style="text-align:center; border-bottom: 3px solid #ffcc00; margin-bottom:25px;">
                 <h1 style="color:#1a472a;">⚽ BOLÃO COPA DO MUNDO 2026</h1>
                 <h2 style="color:#c0392b;">PRIMEIRA RODADA - RESULTADOS EXATOS</h2>
                 <p><strong>Participante:</strong> ${nome} &nbsp;|&nbsp; <strong>Data:</strong> ${new Date().toLocaleString()}</p>
-                <p style="font-size:12px; margin-top:8px;">🎯 Palpites de gols para cada jogo</p>
+                <p style="font-size:12px; margin-top:8px;">🎯 24 jogos - Palpites de gols para cada partida</p>
             </div>
         `;
         
-        // Agrupar por grupo para o PDF
-        const gruposMap = {};
+        // Agrupar por dia para o PDF
+        const diasMap = {};
         JOGOS_PRIMEIRA_RODADA.forEach(j => {
-            if (!gruposMap[j.grupo]) gruposMap[j.grupo] = [];
-            gruposMap[j.grupo].push(j);
+            if (!diasMap[j.dia]) diasMap[j.dia] = [];
+            diasMap[j.dia].push(j);
         });
         
-        for (let letra of ["A","B","C","D","E","F","G","H"]) {
-            const jogos = gruposMap[letra];
+        const ordemDiasPDF = [
+            "11/06 (Qui)", "12/06 (Sex)", "13/06 (Sáb)", "14/06 (Dom)",
+            "15/06 (Seg)", "16/06 (Ter)", "17/06 (Qua)"
+        ];
+        
+        for (let dia of ordemDiasPDF) {
+            const jogos = diasMap[dia];
             if (!jogos) continue;
             
-            pdfContent.innerHTML += `<h3 style="background:#ffcc00; padding:8px 20px; border-radius:40px; display:inline-block; margin-top:20px;">📌 GRUPO ${letra}</h3>`;
+            pdfContent.innerHTML += `<h3 style="background:#ffcc00; padding:8px 20px; border-radius:40px; display:inline-block; margin-top:20px;">📅 ${dia}</h3>`;
             pdfContent.innerHTML += `<table style="width:100%; border-collapse:collapse; margin-bottom:25px; margin-top:10px;">`;
             pdfContent.innerHTML += `<tr style="background:#f0f0f0;">
-                <th style="padding:12px; border:1px solid #ddd; text-align:left;">JOGO</th>
-                <th style="padding:12px; border:1px solid #ddd; text-align:center;">PLACAR PALPITADO</th>
-                <th style="padding:12px; border:1px solid #ddd; text-align:center;">RESULTADO</th>
+                <th style="padding:10px; border:1px solid #ddd; text-align:left;">HORÁRIO</th>
+                <th style="padding:10px; border:1px solid #ddd; text-align:left;">GRUPO</th>
+                <th style="padding:10px; border:1px solid #ddd; text-align:left;">JOGO</th>
+                <th style="padding:10px; border:1px solid #ddd; text-align:center;">PLACAR</th>
+                <th style="padding:10px; border:1px solid #ddd; text-align:center;">RESULTADO</th>
             </tr>`;
             
             jogos.forEach(jogo => {
@@ -595,9 +647,11 @@
                 
                 pdfContent.innerHTML += `
                     <tr>
-                        <td style="padding:12px; border:1px solid #ddd;">${jogo.timeCasa} vs ${jogo.timeFora}</td>
-                        <td style="padding:12px; border:1px solid #ddd; text-align:center; font-weight:bold; font-size:1.2rem;">${golsCasa} - ${golsFora}</td>
-                        <td style="padding:12px; border:1px solid #ddd; text-align:center;">${resultadoFinal}</td>
+                        <td style="padding:10px; border:1px solid #ddd;">${jogo.horario}</td>
+                        <td style="padding:10px; border:1px solid #ddd; text-align:center;">${jogo.grupo}</td>
+                        <td style="padding:10px; border:1px solid #ddd;">${jogo.timeCasa} vs ${jogo.timeFora}</td>
+                        <td style="padding:10px; border:1px solid #ddd; text-align:center; font-weight:bold;">${golsCasa} - ${golsFora}</td>
+                        <td style="padding:10px; border:1px solid #ddd; text-align:center;">${resultadoFinal}</td>
                     </tr>
                 `;
             });
@@ -605,7 +659,7 @@
         }
         
         pdfContent.innerHTML += `<div style="margin-top:35px; text-align:center; font-size:11px; color:gray; border-top:1px solid #ddd; padding-top:15px;">
-            Bolão gerado por ${nome} - Copa do Mundo 2026 - Primeira Rodada (Placar Exato)
+            Bolão gerado por ${nome} - Copa do Mundo 2026 - Primeira Rodada (Placar Exato) - 24 jogos
         </div>`;
         
         document.body.appendChild(pdfContent);
@@ -636,7 +690,7 @@
     }
     
     function limparTudo() {
-        if (confirm("⚠️ Tem certeza que deseja LIMPAR TODOS os placares dos palpites?")) {
+        if (confirm("⚠️ Tem certeza que deseja LIMPAR TODOS os placares dos 24 jogos?")) {
             JOGOS_PRIMEIRA_RODADA.forEach(jogo => {
                 jogo.golsCasa = "";
                 jogo.golsFora = "";
