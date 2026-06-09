@@ -117,7 +117,7 @@
 
         .jogos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 16px;
             margin: 20px 0 25px;
         }
@@ -144,7 +144,7 @@
         }
         .jogo-nomes {
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin: 6px 0 12px;
             display: flex;
             justify-content: space-between;
@@ -238,6 +238,7 @@
         }
         .btn-pdf:hover {
             background: #0f2a1a;
+            transform: scale(1.01);
         }
         footer {
             text-align: center;
@@ -261,28 +262,29 @@
 
     <div class="user-area">
         <div class="input-group">
-            <label>👤 Seu nome</label>
-            <input type="text" id="nomeParticipante" placeholder="Ex: João Silva">
+            <label>👤 Seu nome completo</label>
+            <input type="text" id="nomeParticipante" placeholder="Ex: João Silva" autocomplete="off">
         </div>
         <div class="input-group">
-            <label>📧 E-mail</label>
-            <input type="email" id="emailParticipante" placeholder="joao@email.com">
+            <label>📧 Seu e-mail</label>
+            <input type="email" id="emailParticipante" placeholder="joao@email.com" autocomplete="off">
         </div>
     </div>
 
     <div class="resumo-card">
-        <h3>📋 Resumo dos palpites</h3>
+        <h3>📋 Resumo dos seus palpites</h3>
         <div id="resumoTexto" class="resumo-texto">Carregando...</div>
     </div>
 
     <h2 style="font-size: 1.2rem; margin-bottom: 8px;">🗓️ JOGOS DA 1ª RODADA</h2>
     <div id="jogosContainer" class="jogos-grid"></div>
 
-    <button id="btnGerarPDF" class="btn-pdf">📄 GERAR PDF DA 1ª RODADA</button>
-    <footer>Clique no time que você acha que vence ou em EMPATE. Progresso salvo automaticamente.</footer>
+    <button id="btnGerarPDF" class="btn-pdf">📄 GERAR MEU PDF COM OS PALPITES</button>
+    <footer>Clique no time que você acredita que vencerá ou em EMPATE. Seu progresso é salvo automaticamente. O PDF será gerado com seu nome e todos os palpites.</footer>
 </div>
 
 <script>
+    // Lista completa dos jogos da 1ª rodada
     const jogosData = [
         { grupo: "Grupo A", casa: "México", fora: "África do Sul" },
         { grupo: "Grupo A", casa: "República da Coreia", fora: "República Tcheca" },
@@ -310,9 +312,10 @@
         { grupo: "Grupo K", casa: "Uzbequistão", fora: "Colômbia" }
     ];
 
-    // Cada palpite: { vencedor: "casa" | "fora" | "empate" | null, semPalpite: false }
+    // Estrutura do palpite: { vencedor: "casa" | "fora" | "empate" | null, semPalpite: boolean }
     let palpites = [];
 
+    // Carregar dados salvos
     function loadFromStorage() {
         const saved = localStorage.getItem("bolao2026_rodada1_vencedor");
         if(saved) {
@@ -366,7 +369,8 @@
         }
         const sem = palpites.filter(p => p.semPalpite).length;
         const total = jogosData.length;
-        const header = `✅ Palpites feitos: ${definidos}/${total}  |  🚫 Sem palpite: ${sem}\n`;
+        const nome = document.getElementById("nomeParticipante").value || "Visitante";
+        const header = `👤 ${nome} | ✅ Palpites feitos: ${definidos}/${total}  |  🚫 Sem palpite: ${sem}\n`;
         document.getElementById("resumoTexto").innerHTML = header + linhas.join("\n");
     }
 
@@ -381,12 +385,10 @@
             const card = document.createElement("div");
             card.className = "card-jogo";
             
-            // Grupo
             const grupoSpan = document.createElement("div");
             grupoSpan.className = "grupo-badge";
             grupoSpan.innerText = jogo.grupo;
             
-            // Times
             const nomesDiv = document.createElement("div");
             nomesDiv.className = "jogo-nomes";
             nomesDiv.innerHTML = `
@@ -395,7 +397,6 @@
                 <span class="time-nome">${jogo.fora}</span>
             `;
             
-            // Botões
             const opcoesDiv = document.createElement("div");
             opcoesDiv.className = "opcoes-palpite";
             
@@ -414,22 +415,19 @@
             btnFora.innerText = `✈️ ${jogo.fora.substring(0,14)}`;
             if(palpiteAtual.vencedor === "fora" && !palpiteAtual.semPalpite) btnFora.classList.add("selected");
             
-            // lógica de clique
             const setPalpite = (tipo) => {
                 if(palpiteAtual.semPalpite) return;
                 palpites[i].vencedor = tipo;
                 palpites[i].semPalpite = false;
-                // atualizar visual
                 [btnCasa, btnEmpate, btnFora].forEach(btn => btn.classList.remove("selected"));
                 if(tipo === "casa") btnCasa.classList.add("selected");
                 if(tipo === "empate") btnEmpate.classList.add("selected");
                 if(tipo === "fora") btnFora.classList.add("selected");
-                // desmarcar checkbox sem palpite
                 const chk = card.querySelector(".chk-sem-palpite");
                 if(chk) chk.checked = false;
                 saveToStorage();
                 updateResumo();
-                updateStatusText(card, i);
+                updateStatusText();
             };
             
             btnCasa.onclick = () => setPalpite("casa");
@@ -440,7 +438,6 @@
             opcoesDiv.appendChild(btnEmpate);
             opcoesDiv.appendChild(btnFora);
             
-            // Sem palpite
             const semDiv = document.createElement("div");
             semDiv.className = "sem-palpite-area";
             const chkSem = document.createElement("input");
@@ -463,10 +460,9 @@
                 }
                 saveToStorage();
                 updateResumo();
-                updateStatusText(card, i);
+                updateStatusText();
             };
             
-            // status extra
             const statusSpan = document.createElement("div");
             statusSpan.className = "status-palpite";
             const updateStatusText = () => {
@@ -476,9 +472,6 @@
                 else if(palpites[i].vencedor === "empate") statusSpan.innerText = `✅ Palpite: Empate`;
                 else statusSpan.innerText = "🔘 Clique em um time ou EMPATE";
             };
-            const updateStatusTextLocal = () => updateStatusText();
-            window[`updateStatus_${i}`] = updateStatusTextLocal;
-            updateStatusTextLocal();
             
             card.appendChild(grupoSpan);
             card.appendChild(nomesDiv);
@@ -487,8 +480,7 @@
             card.appendChild(statusSpan);
             container.appendChild(card);
             
-            // guardar função de atualização
-            card.updateStatus = updateStatusTextLocal;
+            updateStatusText();
         }
         updateResumo();
     }
@@ -496,23 +488,31 @@
     async function gerarPDF() {
         const nome = document.getElementById("nomeParticipante").value.trim();
         const email = document.getElementById("emailParticipante").value.trim();
-        if(!nome || !email) {
-            alert("⚠️ Preencha NOME e E-MAIL antes de gerar o PDF.");
+        
+        if(!nome) {
+            alert("⚠️ Por favor, preencha seu NOME antes de gerar o PDF.");
+            document.getElementById("nomeParticipante").focus();
             return;
         }
+        if(!email) {
+            alert("⚠️ Por favor, preencha seu E-MAIL antes de gerar o PDF.");
+            document.getElementById("emailParticipante").focus();
+            return;
+        }
+        
         saveUser();
         
         const now = new Date();
-        const dataHora = now.toLocaleString("pt-BR");
-        let linhas = "";
+        const dataHora = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+        let linhasTabela = "";
         let palpitesFeitos = 0;
         
-        for(let i=0; i<jogosData.length; i++) {
+        for(let i = 0; i < jogosData.length; i++) {
             const j = jogosData[i];
             const p = palpites[i];
             let palpiteTexto = "";
             if(p.semPalpite) {
-                palpiteTexto = "🚫 Sem palpite";
+                palpiteTexto = "🚫 SEM PALPITE";
             } else if(p.vencedor === "casa") {
                 palpiteTexto = `🏆 ${j.casa}`;
                 palpitesFeitos++;
@@ -520,43 +520,56 @@
                 palpiteTexto = `🏆 ${j.fora}`;
                 palpitesFeitos++;
             } else if(p.vencedor === "empate") {
-                palpiteTexto = "🤝 Empate";
+                palpiteTexto = "🤝 EMPATE";
                 palpitesFeitos++;
             } else {
-                palpiteTexto = "❌ Não informado";
+                palpiteTexto = "❌ NÃO INFORMADO";
             }
-            linhas += `
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 8px; font-size: 11px;">${j.grupo}</td>
-                    <td style="padding: 8px;">${j.casa} 🆚 ${j.fora}</td>
-                    <td style="padding: 8px; text-align: center; font-weight: bold;">${palpiteTexto}</td>
+            linhasTabela += `
+                <tr style="border-bottom: 1px solid #e0e0e0;">
+                    <td style="padding: 10px 8px; font-size: 11px; width: 70px;">${j.grupo}</td>
+                    <td style="padding: 10px 8px; font-size: 12px;">${j.casa} 🆚 ${j.fora}</td>
+                    <td style="padding: 10px 8px; text-align: center; font-weight: bold; font-size: 12px;">${palpiteTexto}</td>
                 </tr>
             `;
         }
         
         const totalSem = palpites.filter(p => p.semPalpite).length;
+        const totalNaoInformado = palpites.filter(p => !p.semPalpite && p.vencedor === null).length;
+        
         const htmlPDF = `
-            <div style="font-family: 'Segoe UI', Arial; width: 100%; background: white; padding: 25px; border-radius: 16px;">
-                <div style="text-align: center; border-bottom: 3px solid #ffcc00; padding-bottom: 12px; margin-bottom: 18px;">
-                    <h1 style="color: #1f3b2c; margin:0;">🏆 BOLÃO COPA 2026 - 1ª RODADA</h1>
-                    <p><strong>Participante:</strong> ${nome} (${email})</p>
-                    <p><strong>Gerado em:</strong> ${dataHora}</p>
-                    <p><strong>Modalidade:</strong> Palpite no VENCEDOR ou EMPATE</p>
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; width: 100%; background: white; padding: 30px; border-radius: 16px; box-sizing: border-box;">
+                <div style="text-align: center; border-bottom: 4px solid #ffcc00; padding-bottom: 15px; margin-bottom: 20px;">
+                    <h1 style="color: #1f3b2c; margin: 0; font-size: 24px;">🏆 BOLÃO COPA DO MUNDO 2026</h1>
+                    <h2 style="color: #2c5a3b; margin: 5px 0; font-size: 18px;">1ª RODADA - PALPITES</h2>
                 </div>
-                <div style="background: #f4f0e0; padding: 8px 12px; border-radius: 20px; margin-bottom: 18px; text-align:center;">
-                    ✅ Palpites definidos: ${palpitesFeitos} / ${jogosData.length} &nbsp;| 🚫 Sem palpite: ${totalSem}
+                
+                <div style="background: #f0f2e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+                    <p style="margin: 5px 0; font-size: 14px;"><strong>👤 Participante:</strong> ${nome}</p>
+                    <p style="margin: 5px 0; font-size: 14px;"><strong>📧 E-mail:</strong> ${email}</p>
+                    <p style="margin: 5px 0; font-size: 14px;"><strong>📅 Data de geração:</strong> ${dataHora}</p>
+                    <hr style="margin: 10px 0; border-color: #ddd;">
+                    <p style="margin: 5px 0; font-size: 13px;"><strong>✅ Palpites definidos:</strong> ${palpitesFeitos} / ${jogosData.length}</p>
+                    <p style="margin: 5px 0; font-size: 13px;"><strong>🚫 Sem palpite (optou por não palpitar):</strong> ${totalSem}</p>
+                    <p style="margin: 5px 0; font-size: 13px;"><strong>❌ Não informado (em branco):</strong> ${totalNaoInformado}</p>
                 </div>
-                <table style="width:100%; border-collapse: collapse;">
+                
+                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
                     <thead>
-                        <tr><th style="background:#ffcc00; padding: 8px; text-align:left;">Grupo</th>
-                            <th style="background:#ffcc00; padding: 8px; text-align:left;">Jogo</th>
-                            <th style="background:#ffcc00; padding: 8px; text-align:center;">Palpite</th>
+                        <tr style="background: #ffcc00;">
+                            <th style="padding: 10px; text-align: left; border-radius: 8px 0 0 0;">GRUPO</th>
+                            <th style="padding: 10px; text-align: left;">JOGO</th>
+                            <th style="padding: 10px; text-align: center;">PALPITE</th>
                         </tr>
                     </thead>
-                    <tbody>${linhas}</tbody>
+                    <tbody>
+                        ${linhasTabela}
+                    </tbody>
                 </table>
-                <div style="margin-top: 25px; text-align: center; font-size: 9px; color: gray; border-top: 1px solid #ccc; padding-top: 12px;">
-                    Documento gerado pelo Bolão Amigos • Copa do Mundo 2026 • 1ª Rodada • Vencedor/Empate
+                
+                <div style="margin-top: 25px; text-align: center; font-size: 9px; color: #888; border-top: 1px solid #ddd; padding-top: 15px;">
+                    <p>Documento gerado pelo sistema de Bolão Copa 2026 - Amigos</p>
+                    <p>Este documento comprova os palpites de ${nome} para a 1ª rodada da Copa do Mundo 2026</p>
                 </div>
             </div>
         `;
@@ -571,7 +584,12 @@
         
         try {
             const element = tempDiv.firstChild;
-            const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#ffffff" });
+            const canvas = await html2canvas(element, { 
+                scale: 2, 
+                backgroundColor: "#ffffff",
+                logging: false,
+                useCORS: false
+            });
             const imgData = canvas.toDataURL("image/png");
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
@@ -590,11 +608,15 @@
                     position -= pageHeight;
                 }
             }
-            const fileName = `bolao_${nome.replace(/[^a-z0-9]/gi, '_')}_rodada1.pdf`;
+            const nomeLimpo = nome.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
+            const fileName = `bolao_copa2026_${nomeLimpo}_1rodada.pdf`;
             pdf.save(fileName);
+            
+            // Feedback visual
+            alert(`✅ PDF gerado com sucesso!\n\nArquivo: ${fileName}\nParticipante: ${nome}\nPalpites registrados: ${palpitesFeitos}`);
         } catch(err) {
             console.error(err);
-            alert("Erro ao gerar PDF. Tente novamente.");
+            alert("❌ Erro ao gerar PDF. Tente novamente.");
         } finally {
             document.body.removeChild(tempDiv);
         }
@@ -604,9 +626,17 @@
         loadFromStorage();
         loadUser();
         renderJogos();
+        
         document.getElementById("btnGerarPDF").addEventListener("click", gerarPDF);
-        document.getElementById("nomeParticipante").addEventListener("input", saveUser);
+        document.getElementById("nomeParticipante").addEventListener("input", () => {
+            saveUser();
+            updateResumo();
+        });
         document.getElementById("emailParticipante").addEventListener("input", saveUser);
+        
+        // Atualizar resumo quando nome mudar
+        const nomeInput = document.getElementById("nomeParticipante");
+        nomeInput.addEventListener("input", updateResumo);
     }
     
     init();
