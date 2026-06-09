@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Bolão Copa 2026 - Primeira Rodada</title>
+    <title>Bolão Copa 2026 - Primeira Rodada (com Resultados)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             background: white;
             border-radius: 48px;
@@ -28,7 +28,6 @@
             overflow: hidden;
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, #ffcc00 0%, #f0b400 100%);
             color: #1a472a;
@@ -70,7 +69,6 @@
             font-weight: bold;
         }
 
-        /* Área do participante */
         .participant-area {
             background: #f0f4e8;
             padding: 20px 32px;
@@ -147,42 +145,40 @@
             background: #7f8c8d;
         }
 
-        /* Grupos */
         .grupo-section {
-            margin-bottom: 40px;
-            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 30px;
         }
 
         .grupo-titulo {
             background: #1a472a;
             color: #ffcc00;
-            padding: 14px 24px;
-            font-size: 1.6rem;
+            padding: 12px 24px;
+            font-size: 1.5rem;
             font-weight: bold;
-            border-radius: 60px 60px 20px 20px;
-            margin: 20px 20px 20px 20px;
+            border-radius: 60px;
+            margin: 20px 20px 15px 20px;
             display: inline-block;
         }
 
         .jogos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 20px;
             padding: 0 24px 24px 24px;
         }
 
         .jogo-card {
-            background: #fefaf0;
+            background: linear-gradient(135deg, #fefaf0 0%, #fff6e5 100%);
             border-radius: 28px;
-            padding: 18px;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
             border: 1px solid #ffe0a3;
             transition: transform 0.2s;
         }
 
         .jogo-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.12);
         }
 
         .times {
@@ -190,74 +186,94 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 18px;
-            font-size: 1.1rem;
-            font-weight: 700;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .time-casa, .time-fora {
             flex: 1;
             text-align: center;
             background: white;
-            padding: 8px;
+            padding: 10px;
             border-radius: 60px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            font-weight: bold;
+            font-size: 1.1rem;
         }
 
         .vs {
             background: #ffcc00;
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 40px;
             font-weight: bold;
             color: #1a472a;
         }
 
-        .palpite-area {
-            margin-top: 12px;
-            text-align: center;
-            padding-top: 12px;
-            border-top: 1px dashed #ffd966;
+        .resultado-area {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 15px;
+            margin-top: 5px;
         }
 
-        .palpite-area label {
-            font-weight: 600;
-            font-size: 0.8rem;
-            display: block;
-            margin-bottom: 8px;
+        .resultado-label {
+            font-weight: 700;
+            font-size: 0.85rem;
             color: #2c5e2d;
+            text-align: center;
+            margin-bottom: 12px;
+            display: block;
         }
 
-        .opcoes-palpite {
+        .placar-inputs {
             display: flex;
-            gap: 10px;
+            align-items: center;
             justify-content: center;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
-        .opcao {
-            background: #f0f0f0;
-            border-radius: 40px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: 2px solid transparent;
+        .input-gol {
+            text-align: center;
         }
 
-        input[type="radio"] {
-            display: none;
+        .input-gol label {
+            font-size: 0.75rem;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        input[type="radio"]:checked + .opcao {
-            background: #1a472a;
-            color: white;
+        .input-gol input {
+            width: 70px;
+            padding: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .input-gol input:focus {
             border-color: #ffcc00;
-            transform: scale(0.96);
         }
 
-        .opcao:hover {
-            background: #ffcc00;
+        .traco {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a472a;
+        }
+
+        .vencedor-preview {
+            margin-top: 12px;
+            padding: 8px;
+            background: #e8f0e3;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
             color: #1a472a;
         }
 
@@ -280,6 +296,12 @@
         @media (max-width: 700px) {
             .jogos-grid { grid-template-columns: 1fr; }
             .times { flex-direction: column; }
+            .placar-inputs { gap: 8px; }
+        }
+
+        .status-icon {
+            font-size: 0.9rem;
+            margin-left: 8px;
         }
     </style>
 </head>
@@ -287,8 +309,8 @@
 <div class="container">
     <div class="header">
         <h1>⚽ BOLÃO COPA 2026 <span>PRIMEIRA RODADA</span></h1>
-        <div class="sub">Palpites de todos os grupos • Quem vai vencer cada jogo?</div>
-        <div class="badge-rodada">📅 Fase de Grupos - Jogos de abertura</div>
+        <div class="sub">Palpite com resultado EXATO (gols) de cada jogo</div>
+        <div class="badge-rodada">📅 Fase de Grupos - 16 jogos • Marque o placar!</div>
     </div>
 
     <div class="participant-area">
@@ -305,96 +327,102 @@
     <div id="palpitesContainer"></div>
 
     <div class="resumo-area" id="resumoPreview">
-        <strong>📋 Resumo rápido:</strong> Seus palpites aparecerão aqui após preencher.
+        <strong>📋 Resumo:</strong> Preencha os placares (gols de cada time) para todos os jogos.
     </div>
 
-    <footer>⚽ Aposte na primeira rodada! Cada participante faz seus palpites e gera o PDF para compartilhar com os amigos.</footer>
+    <footer>⚽ Placar exato vale mais pontos! Digite os gols de cada equipe. O PDF gerado terá todos os seus palpites.</footer>
 </div>
 
 <script>
-    // ----- JOGOS DA PRIMEIRA RODADA - COPA 2026 (32 times, 16 jogos) -----
+    // ----- JOGOS DA PRIMEIRA RODADA (16 jogos) -----
     const JOGOS_PRIMEIRA_RODADA = [
         // Grupo A
-        { id: "A1", grupo: "A", timeCasa: "Brasil", timeFora: "Suíça", palpite: "" },
-        { id: "A2", grupo: "A", timeCasa: "Canadá", timeFora: "Camarões", palpite: "" },
+        { id: "A1", grupo: "A", timeCasa: "Brasil", timeFora: "Suíça", golsCasa: "", golsFora: "" },
+        { id: "A2", grupo: "A", timeCasa: "Canadá", timeFora: "Camarões", golsCasa: "", golsFora: "" },
         // Grupo B
-        { id: "B1", grupo: "B", timeCasa: "Argentina", timeFora: "Dinamarca", palpite: "" },
-        { id: "B2", grupo: "B", timeCasa: "Egito", timeFora: "Austrália", palpite: "" },
+        { id: "B1", grupo: "B", timeCasa: "Argentina", timeFora: "Dinamarca", golsCasa: "", golsFora: "" },
+        { id: "B2", grupo: "B", timeCasa: "Egito", timeFora: "Austrália", golsCasa: "", golsFora: "" },
         // Grupo C
-        { id: "C1", grupo: "C", timeCasa: "França", timeFora: "Sérvia", palpite: "" },
-        { id: "C2", grupo: "C", timeCasa: "Peru", timeFora: "Japão", palpite: "" },
+        { id: "C1", grupo: "C", timeCasa: "França", timeFora: "Sérvia", golsCasa: "", golsFora: "" },
+        { id: "C2", grupo: "C", timeCasa: "Peru", timeFora: "Japão", golsCasa: "", golsFora: "" },
         // Grupo D
-        { id: "D1", grupo: "D", timeCasa: "Inglaterra", timeFora: "Croácia", palpite: "" },
-        { id: "D2", grupo: "D", timeCasa: "EUA", timeFora: "Gana", palpite: "" },
+        { id: "D1", grupo: "D", timeCasa: "Inglaterra", timeFora: "Croácia", golsCasa: "", golsFora: "" },
+        { id: "D2", grupo: "D", timeCasa: "EUA", timeFora: "Gana", golsCasa: "", golsFora: "" },
         // Grupo E
-        { id: "E1", grupo: "E", timeCasa: "Espanha", timeFora: "Alemanha", palpite: "" },
-        { id: "E2", grupo: "E", timeCasa: "Marrocos", timeFora: "Coreia do Sul", palpite: "" },
+        { id: "E1", grupo: "E", timeCasa: "Espanha", timeFora: "Alemanha", golsCasa: "", golsFora: "" },
+        { id: "E2", grupo: "E", timeCasa: "Marrocos", timeFora: "Coreia do Sul", golsCasa: "", golsFora: "" },
         // Grupo F
-        { id: "F1", grupo: "F", timeCasa: "Portugal", timeFora: "Holanda", palpite: "" },
-        { id: "F2", grupo: "F", timeCasa: "Senegal", timeFora: "Arábia Saudita", palpite: "" },
+        { id: "F1", grupo: "F", timeCasa: "Portugal", timeFora: "Holanda", golsCasa: "", golsFora: "" },
+        { id: "F2", grupo: "F", timeCasa: "Senegal", timeFora: "Arábia Saudita", golsCasa: "", golsFora: "" },
         // Grupo G
-        { id: "G1", grupo: "G", timeCasa: "Bélgica", timeFora: "Uruguai", palpite: "" },
-        { id: "G2", grupo: "G", timeCasa: "México", timeFora: "Nigéria", palpite: "" },
+        { id: "G1", grupo: "G", timeCasa: "Bélgica", timeFora: "Uruguai", golsCasa: "", golsFora: "" },
+        { id: "G2", grupo: "G", timeCasa: "México", timeFora: "Nigéria", golsCasa: "", golsFora: "" },
         // Grupo H
-        { id: "H1", grupo: "H", timeCasa: "Colômbia", timeFora: "Polônia", palpite: "" },
-        { id: "H2", grupo: "H", timeCasa: "Equador", timeFora: "Suécia", palpite: "" }
+        { id: "H1", grupo: "H", timeCasa: "Colômbia", timeFora: "Polônia", golsCasa: "", golsFora: "" },
+        { id: "H2", grupo: "H", timeCasa: "Equador", timeFora: "Suécia", golsCasa: "", golsFora: "" }
     ];
 
-    // Opções de palpite
-    const OPCOES_PALPITE = [
-        { valor: "casa", rotulo: "🏠 Vitória do Mandante", emoji: "🏠" },
-        { valor: "empate", rotulo: "🤝 Empate", emoji: "🤝" },
-        { valor: "fora", rotulo: "✈️ Vitória Visitante", emoji: "✈️" }
-    ];
-
-    // Carrega/salva localStorage
-    let palpites = {};
-
+    // Carregar dados do localStorage
     function carregarPalpites() {
-        const saved = localStorage.getItem("bolaoprimeirarodada");
+        const saved = localStorage.getItem("bolaoprimeirarodada_placar");
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
-                // mesclar com estrutura
                 JOGOS_PRIMEIRA_RODADA.forEach(jogo => {
-                    if (parsed[jogo.id]) jogo.palpite = parsed[jogo.id];
-                    else jogo.palpite = "";
+                    if (parsed[jogo.id]) {
+                        jogo.golsCasa = parsed[jogo.id].golsCasa || "";
+                        jogo.golsFora = parsed[jogo.id].golsFora || "";
+                    }
                 });
             } catch(e) {}
         }
-        const nomeSalvo = localStorage.getItem("bolaoprimeironome");
+        const nomeSalvo = localStorage.getItem("bolaoprimeironome_placar");
         if (nomeSalvo) document.getElementById("nomeParticipante").value = nomeSalvo;
     }
 
     function salvarTudo() {
         const estado = {};
         JOGOS_PRIMEIRA_RODADA.forEach(jogo => {
-            estado[jogo.id] = jogo.palpite;
+            estado[jogo.id] = {
+                golsCasa: jogo.golsCasa,
+                golsFora: jogo.golsFora
+            };
         });
-        localStorage.setItem("bolaoprimeirarodada", JSON.stringify(estado));
+        localStorage.setItem("bolaoprimeirarodada_placar", JSON.stringify(estado));
         const nome = document.getElementById("nomeParticipante").value;
-        localStorage.setItem("bolaoprimeironome", nome);
+        localStorage.setItem("bolaoprimeironome_placar", nome);
         atualizarResumo();
+    }
+
+    function obterResultadoTexto(jogo) {
+        const golsCasa = jogo.golsCasa !== "" ? parseInt(jogo.golsCasa) : null;
+        const golsFora = jogo.golsFora !== "" ? parseInt(jogo.golsFora) : null;
+        
+        if (golsCasa === null || golsFora === null) return "⏳ Não palpado";
+        if (golsCasa > golsFora) return `🏠 Vitória do ${jogo.timeCasa} (${golsCasa}-${golsFora})`;
+        if (golsFora > golsCasa) return `✈️ Vitória do ${jogo.timeFora} (${golsCasa}-${golsFora})`;
+        return `🤝 Empate (${golsCasa}-${golsFora})`;
     }
 
     function atualizarResumo() {
         const total = JOGOS_PRIMEIRA_RODADA.length;
-        const preenchidos = JOGOS_PRIMEIRA_RODADA.filter(j => j.palpite !== "").length;
+        const preenchidos = JOGOS_PRIMEIRA_RODADA.filter(j => j.golsCasa !== "" && j.golsFora !== "").length;
         const resumoDiv = document.getElementById("resumoPreview");
         const nome = document.getElementById("nomeParticipante").value || "Participante";
+        
         if (preenchidos === total) {
-            resumoDiv.innerHTML = `<strong>✅ ${nome}, você preencheu todos os ${total} palpites!</strong> 🎉 Já pode gerar o PDF.`;
+            resumoDiv.innerHTML = `<strong>✅ ${nome}, você preencheu TODOS os ${total} jogos com placar!</strong> 🎉 Já pode gerar o PDF.`;
         } else {
-            resumoDiv.innerHTML = `<strong>📊 ${nome}</strong> — Você preencheu ${preenchidos} de ${total} jogos. Complete todos para fechar o bolão!`;
+            resumoDiv.innerHTML = `<strong>📊 ${nome}</strong> — Você preencheu ${preenchidos} de ${total} jogos. Complete todos os placares!`;
         }
     }
 
-    // Renderizar todos os grupos e jogos
+    // Renderizar todos os jogos
     function renderizarBolao() {
         const container = document.getElementById("palpitesContainer");
         container.innerHTML = "";
 
-        // Agrupar jogos por grupo
+        // Agrupar por grupo
         const grupos = {};
         JOGOS_PRIMEIRA_RODADA.forEach(jogo => {
             if (!grupos[jogo.grupo]) grupos[jogo.grupo] = [];
@@ -418,42 +446,81 @@
                 card.className = "jogo-card";
                 card.dataset.id = jogo.id;
                 
-                // Criar os radios dinamicamente
-                let radiosHtml = `<div class="opcoes-palpite">`;
-                OPCOES_PALPITE.forEach(op => {
-                    const isChecked = (jogo.palpite === op.valor);
-                    radiosHtml += `
-                        <label style="display:inline-block">
-                            <input type="radio" name="palpite_${jogo.id}" value="${op.valor}" ${isChecked ? "checked" : ""}>
-                            <span class="opcao">${op.rotulo}</span>
-                        </label>
-                    `;
-                });
-                radiosHtml += `</div>`;
+                // Preview do resultado atual
+                const resultadoPreview = obterResultadoTexto(jogo);
+                const resultadoClass = (jogo.golsCasa !== "" && jogo.golsFora !== "") ? "✅" : "⏳";
                 
                 card.innerHTML = `
                     <div class="times">
-                        <div class="time-casa"><strong>${jogo.timeCasa}</strong> 🏟️</div>
+                        <div class="time-casa">🏟️ <strong>${jogo.timeCasa}</strong></div>
                         <div class="vs">VS</div>
-                        <div class="time-fora">✈️ <strong>${jogo.timeFora}</strong></div>
+                        <div class="time-fora"><strong>${jogo.timeFora}</strong> ✈️</div>
                     </div>
-                    <div class="palpite-area">
-                        <label>🔮 MEU PALPITE:</label>
-                        ${radiosHtml}
+                    <div class="resultado-area">
+                        <div class="resultado-label">
+                            🔮 MEU PALPITE (PLACAR EXATO) ${resultadoClass}
+                        </div>
+                        <div class="placar-inputs">
+                            <div class="input-gol">
+                                <label>${jogo.timeCasa}</label>
+                                <input type="number" class="gols-casa" value="${jogo.golsCasa}" placeholder="0" min="0" max="20" step="1">
+                            </div>
+                            <span class="traco">×</span>
+                            <div class="input-gol">
+                                <label>${jogo.timeFora}</label>
+                                <input type="number" class="gols-fora" value="${jogo.golsFora}" placeholder="0" min="0" max="20" step="1">
+                            </div>
+                        </div>
+                        <div class="vencedor-preview" id="preview-${jogo.id}">
+                            ${resultadoPreview}
+                        </div>
                     </div>
                 `;
                 
                 gridDiv.appendChild(card);
                 
-                // Adicionar eventos nos radios após inserir no DOM
-                const radios = card.querySelectorAll(`input[name="palpite_${jogo.id}"]`);
-                radios.forEach(radio => {
-                    radio.addEventListener("change", (e) => {
-                        jogo.palpite = e.target.value;
-                        salvarTudo();
-                        renderizarBolao(); // re-render para manter sincronia (mantém seleção)
-                    });
-                });
+                // Adicionar eventos
+                const inputCasa = card.querySelector(".gols-casa");
+                const inputFora = card.querySelector(".gols-fora");
+                
+                const atualizarJogo = () => {
+                    let golsCasaVal = inputCasa.value;
+                    let golsForaVal = inputFora.value;
+                    
+                    // Validar números
+                    if (golsCasaVal !== "") {
+                        let num = parseInt(golsCasaVal);
+                        if (isNaN(num)) num = 0;
+                        if (num < 0) num = 0;
+                        if (num > 20) num = 20;
+                        jogo.golsCasa = num.toString();
+                        inputCasa.value = num;
+                    } else {
+                        jogo.golsCasa = "";
+                    }
+                    
+                    if (golsForaVal !== "") {
+                        let num = parseInt(golsForaVal);
+                        if (isNaN(num)) num = 0;
+                        if (num < 0) num = 0;
+                        if (num > 20) num = 20;
+                        jogo.golsFora = num.toString();
+                        inputFora.value = num;
+                    } else {
+                        jogo.golsFora = "";
+                    }
+                    
+                    // Atualizar preview
+                    const previewSpan = document.getElementById(`preview-${jogo.id}`);
+                    if (previewSpan) {
+                        previewSpan.innerHTML = obterResultadoTexto(jogo);
+                    }
+                    
+                    salvarTudo();
+                };
+                
+                inputCasa.addEventListener("input", atualizarJogo);
+                inputFora.addEventListener("input", atualizarJogo);
             });
             
             grupoDiv.appendChild(gridDiv);
@@ -461,7 +528,7 @@
         }
     }
 
-    // Função para gerar PDF com todos os palpites
+    // Gerar PDF com todos os palpites
     async function gerarPDF() {
         const nome = document.getElementById("nomeParticipante").value.trim();
         if (!nome) {
@@ -469,14 +536,14 @@
             return;
         }
         
-        const preenchidos = JOGOS_PRIMEIRA_RODADA.filter(j => j.palpite !== "").length;
+        const preenchidos = JOGOS_PRIMEIRA_RODADA.filter(j => j.golsCasa !== "" && j.golsFora !== "").length;
         if (preenchidos < JOGOS_PRIMEIRA_RODADA.length) {
-            if (!confirm(`Você preencheu apenas ${preenchidos} de ${JOGOS_PRIMEIRA_RODADA.length} jogos. Deseja gerar o PDF mesmo assim?`)) {
+            if (!confirm(`Você preencheu apenas ${preenchidos} de ${JOGOS_PRIMEIRA_RODADA.length} jogos com placar. Deseja gerar o PDF mesmo assim?`)) {
                 return;
             }
         }
         
-        // Criar elemento temporário para o PDF
+        // Criar elemento para o PDF
         const pdfContent = document.createElement("div");
         pdfContent.style.padding = "30px";
         pdfContent.style.fontFamily = "Arial, sans-serif";
@@ -485,14 +552,15 @@
         
         // Cabeçalho
         pdfContent.innerHTML = `
-            <div style="text-align:center; border-bottom: 3px solid #ffcc00; margin-bottom:20px;">
-                <h1 style="color:#1a472a;">⚽ BOLÃO COPA 2026</h1>
-                <h2 style="color:#c0392b;">PRIMEIRA RODADA - FASE DE GRUPOS</h2>
+            <div style="text-align:center; border-bottom: 3px solid #ffcc00; margin-bottom:25px;">
+                <h1 style="color:#1a472a;">⚽ BOLÃO COPA DO MUNDO 2026</h1>
+                <h2 style="color:#c0392b;">PRIMEIRA RODADA - RESULTADOS EXATOS</h2>
                 <p><strong>Participante:</strong> ${nome} &nbsp;|&nbsp; <strong>Data:</strong> ${new Date().toLocaleString()}</p>
+                <p style="font-size:12px; margin-top:8px;">🎯 Palpites de gols para cada jogo</p>
             </div>
         `;
         
-        // Agrupar por grupo
+        // Agrupar por grupo para o PDF
         const gruposMap = {};
         JOGOS_PRIMEIRA_RODADA.forEach(j => {
             if (!gruposMap[j.grupo]) gruposMap[j.grupo] = [];
@@ -502,27 +570,43 @@
         for (let letra of ["A","B","C","D","E","F","G","H"]) {
             const jogos = gruposMap[letra];
             if (!jogos) continue;
-            pdfContent.innerHTML += `<h3 style="background:#ffcc00; padding:8px 16px; border-radius:40px; display:inline-block;">📌 GRUPO ${letra}</h3>`;
-            pdfContent.innerHTML += `<table style="width:100%; border-collapse:collapse; margin-bottom:25px;">`;
-            pdfContent.innerHTML += `<tr style="background:#f0f0f0;"><th style="padding:10px; border:1px solid #ddd;">JOGO</th><th style="padding:10px; border:1px solid #ddd;">PALPITE</th></tr>`;
+            
+            pdfContent.innerHTML += `<h3 style="background:#ffcc00; padding:8px 20px; border-radius:40px; display:inline-block; margin-top:20px;">📌 GRUPO ${letra}</h3>`;
+            pdfContent.innerHTML += `<table style="width:100%; border-collapse:collapse; margin-bottom:25px; margin-top:10px;">`;
+            pdfContent.innerHTML += `<tr style="background:#f0f0f0;">
+                <th style="padding:12px; border:1px solid #ddd; text-align:left;">JOGO</th>
+                <th style="padding:12px; border:1px solid #ddd; text-align:center;">PLACAR PALPITADO</th>
+                <th style="padding:12px; border:1px solid #ddd; text-align:center;">RESULTADO</th>
+            </tr>`;
+            
             jogos.forEach(jogo => {
-                let palpiteTexto = "";
-                if (jogo.palpite === "casa") palpiteTexto = `🏠 Vitória do ${jogo.timeCasa}`;
-                else if (jogo.palpite === "empate") palpiteTexto = `🤝 Empate entre ${jogo.timeCasa} e ${jogo.timeFora}`;
-                else if (jogo.palpite === "fora") palpiteTexto = `✈️ Vitória do ${jogo.timeFora}`;
-                else palpiteTexto = "❌ Não preenchido";
+                const golsCasa = jogo.golsCasa !== "" ? jogo.golsCasa : "?";
+                const golsFora = jogo.golsFora !== "" ? jogo.golsFora : "?";
+                let resultadoFinal = "";
+                if (jogo.golsCasa !== "" && jogo.golsFora !== "") {
+                    const c = parseInt(jogo.golsCasa);
+                    const f = parseInt(jogo.golsFora);
+                    if (c > f) resultadoFinal = `🏠 Vitória ${jogo.timeCasa}`;
+                    else if (f > c) resultadoFinal = `✈️ Vitória ${jogo.timeFora}`;
+                    else resultadoFinal = `🤝 Empate`;
+                } else {
+                    resultadoFinal = "❓ Não palpado";
+                }
                 
                 pdfContent.innerHTML += `
                     <tr>
-                        <td style="padding:10px; border:1px solid #ddd;">${jogo.timeCasa} vs ${jogo.timeFora}</td>
-                        <td style="padding:10px; border:1px solid #ddd; font-weight:bold;">${palpiteTexto}</td>
+                        <td style="padding:12px; border:1px solid #ddd;">${jogo.timeCasa} vs ${jogo.timeFora}</td>
+                        <td style="padding:12px; border:1px solid #ddd; text-align:center; font-weight:bold; font-size:1.2rem;">${golsCasa} - ${golsFora}</td>
+                        <td style="padding:12px; border:1px solid #ddd; text-align:center;">${resultadoFinal}</td>
                     </tr>
                 `;
             });
             pdfContent.innerHTML += `</table>`;
         }
         
-        pdfContent.innerHTML += `<div style="margin-top:30px; text-align:center; font-size:12px; color:gray;">Bolão gerado por ${nome} - Copa do Mundo 2026 - Primeira Rodada</div>`;
+        pdfContent.innerHTML += `<div style="margin-top:35px; text-align:center; font-size:11px; color:gray; border-top:1px solid #ddd; padding-top:15px;">
+            Bolão gerado por ${nome} - Copa do Mundo 2026 - Primeira Rodada (Placar Exato)
+        </div>`;
         
         document.body.appendChild(pdfContent);
         
@@ -543,7 +627,7 @@
                 pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
                 heightLeft -= pageHeight;
             }
-            pdf.save(`bolao_primeira_rodada_${nome.replace(/\s/g, '_')}.pdf`);
+            pdf.save(`bolao_copa2026_primeira_rodada_${nome.replace(/\s/g, '_')}.pdf`);
         } catch (err) {
             alert("Erro ao gerar PDF: " + err);
         } finally {
@@ -552,15 +636,18 @@
     }
     
     function limparTudo() {
-        if (confirm("⚠️ Tem certeza que deseja limpar TODOS os palpites da primeira rodada?")) {
-            JOGOS_PRIMEIRA_RODADA.forEach(jogo => { jogo.palpite = ""; });
+        if (confirm("⚠️ Tem certeza que deseja LIMPAR TODOS os placares dos palpites?")) {
+            JOGOS_PRIMEIRA_RODADA.forEach(jogo => {
+                jogo.golsCasa = "";
+                jogo.golsFora = "";
+            });
             salvarTudo();
             renderizarBolao();
             atualizarResumo();
         }
     }
     
-    // Eventos e inicialização
+    // Eventos
     document.getElementById("gerarPdfBtn").addEventListener("click", gerarPDF);
     document.getElementById("limparBtn").addEventListener("click", limparTudo);
     document.getElementById("nomeParticipante").addEventListener("input", () => {
@@ -568,7 +655,7 @@
         atualizarResumo();
     });
     
-    // Iniciar aplicação
+    // Inicializar
     carregarPalpites();
     renderizarBolao();
     atualizarResumo();
