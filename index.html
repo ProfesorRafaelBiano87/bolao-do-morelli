@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Bolão Copa 2026 - 1ª Rodada</title>
+    <title>Bolão Copa 2026 - Palpite Vencedor/Empate</title>
     <!-- Bibliotecas para geração de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -28,10 +28,8 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             overflow: hidden;
             padding: 20px 25px 40px 25px;
-            transition: all 0.2s;
         }
 
-        /* cabeçalho */
         .header {
             text-align: center;
             border-bottom: 4px solid #ffcc00;
@@ -41,7 +39,6 @@
         .header h1 {
             font-size: 2.2rem;
             color: #1f3b2c;
-            letter-spacing: -0.5px;
         }
         .header h1 span {
             background: #ffcc00;
@@ -55,7 +52,6 @@
             margin-top: 8px;
         }
 
-        /* form dados usuario */
         .user-area {
             background: #e9f0e5;
             padding: 18px 22px;
@@ -64,7 +60,6 @@
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
         .input-group {
             flex: 1;
@@ -83,7 +78,6 @@
             border: 1px solid #bfd9b0;
             background: white;
             font-size: 1rem;
-            transition: 0.2s;
         }
         .input-group input:focus {
             outline: none;
@@ -91,10 +85,8 @@
             box-shadow: 0 0 0 3px rgba(255,204,0,0.3);
         }
 
-        /* resumo dos palpites */
         .resumo-card {
             background: #ffffffdd;
-            backdrop-filter: blur(2px);
             border-radius: 32px;
             padding: 18px 22px;
             margin-bottom: 28px;
@@ -102,9 +94,6 @@
             box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
         .resumo-card h3 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-size: 1.5rem;
             color: #1f3b2c;
         }
@@ -120,10 +109,9 @@
             white-space: pre-wrap;
         }
 
-        /* grade de jogos */
         .jogos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
             margin: 25px 0 30px;
         }
@@ -132,7 +120,6 @@
             border-radius: 28px;
             padding: 14px 18px;
             box-shadow: 0 8px 18px rgba(0,0,0,0.1);
-            transition: transform 0.1s ease;
             border: 1px solid #e0dccf;
         }
         .grupo-badge {
@@ -147,7 +134,7 @@
         }
         .jogo-nomes {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin: 8px 0 12px;
             display: flex;
             justify-content: space-between;
@@ -159,40 +146,61 @@
             background: #faf4e0;
             padding: 4px 8px;
             border-radius: 20px;
-        }
-        .placar-inputs {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-top: 10px;
-        }
-        .placar-inputs input {
-            width: 70px;
-            padding: 10px;
+            flex: 1;
             text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 20px;
-            border: 1px solid #ccc;
         }
         .vs {
             font-weight: bold;
             background: #ffcc00;
             padding: 4px 10px;
             border-radius: 30px;
+            font-size: 0.9rem;
+        }
+        .opcoes-palpite {
+            margin: 12px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .opcao-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 10px 8px;
+            border: 2px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 40px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .opcao-btn.selected {
+            background: #ffcc00;
+            border-color: #d4a800;
+            color: #1f3b2c;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .opcao-btn[data-opcao="empate"] {
+            background: #e8e0c0;
+        }
+        .opcao-btn[data-opcao="empate"].selected {
+            background: #ffcc00;
         }
         .sem-palpite {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             margin-top: 12px;
-            justify-content: flex-end;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
         }
         .sem-palpite label {
             font-size: 0.8rem;
-            font-weight: normal;
             cursor: pointer;
+            color: #666;
         }
         button {
             background: #ffcc00;
@@ -204,7 +212,6 @@
             cursor: pointer;
             transition: 0.2s;
             color: #1f3b2c;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
         button:hover {
             background: #e6b800;
@@ -227,9 +234,16 @@
             font-size: 0.75rem;
             color: #5f7355;
         }
+        .status-palpite {
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 8px;
+            color: #2c5a3b;
+            font-weight: 500;
+        }
         @media (max-width: 700px) {
             .container { padding: 15px; }
-            .jogo-nomes { font-size: 0.9rem; }
+            .opcao-btn { font-size: 0.75rem; padding: 8px 4px; min-width: 60px; }
         }
     </style>
 </head>
@@ -237,38 +251,34 @@
 <div class="container" id="app">
     <div class="header">
         <h1>⚽ BOLÃO <span>COPA 2026</span> 🏆</h1>
-        <p>1ª Rodada • Palpites entre amigos • Gere seu PDF oficial</p>
+        <p>1ª Rodada • Palpite: VENCEDOR ou EMPATE • Gere seu PDF</p>
     </div>
 
-    <!-- dados do participante -->
     <div class="user-area">
         <div class="input-group">
             <label>👤 Seu nome completo</label>
             <input type="text" id="nomeParticipante" placeholder="Ex: João Silva" autocomplete="off">
         </div>
         <div class="input-group">
-            <label>📧 E-mail (para identificação)</label>
+            <label>📧 E-mail</label>
             <input type="email" id="emailParticipante" placeholder="joao@email.com">
         </div>
     </div>
 
-    <!-- resumo dinâmico -->
     <div class="resumo-card">
-        <h3>📋 Resumo dos palpites (ao vivo)</h3>
-        <div id="resumoText" class="resumo-texto">Nenhum palpite registrado ainda. Preencha os jogos abaixo.</div>
+        <h3>📋 Resumo dos palpites</h3>
+        <div id="resumoText" class="resumo-texto">Nenhum palpite registrado ainda.</div>
     </div>
 
-    <!-- grade de jogos -->
     <h2 style="margin-bottom: 6px;">🗓️ JOGOS DA 1ª RODADA</h2>
     <div id="jogosContainer" class="jogos-grid"></div>
 
-    <!-- botão gerar PDF -->
     <button id="btnGerarPDF" class="btn-pdf">📄 GERAR PDF DA 1ª RODADA</button>
-    <footer>Após preencher todos palpites, clique em GERAR PDF. Seu progresso é salvo automaticamente.</footer>
+    <footer>Escolha o vencedor ou empate para cada jogo. Seu progresso é salvo automaticamente.</footer>
 </div>
 
 <script>
-    // ---------- LISTA DE JOGOS (ordem cronológica igual fornecida) ----------
+    // Lista de jogos (igual fornecida)
     const jogosData = [
         { grupo: "Grupo A", timeCasa: "México", timeFora: "África do Sul" },
         { grupo: "Grupo A", timeCasa: "República da Coreia", timeFora: "República Tcheca" },
@@ -296,13 +306,11 @@
         { grupo: "Grupo K", timeCasa: "Uzbequistão", timeFora: "Colômbia" }
     ];
 
-    // ---------- Estrutura de estado: palpites ----------
-    // cada palpite: { casa: string (gols ou ''), fora: string, semPalpite: boolean }
+    // Estrutura: { tipo: "casa" | "fora" | "empate" | null, semPalpite: boolean }
     let palpites = [];
 
-    // carregar do localStorage ou inicializar vazio
     function carregarPalpitesLocal() {
-        const saved = localStorage.getItem("bolao_palpites_rodada1");
+        const saved = localStorage.getItem("bolao_palpites_rodada1_vencedor");
         if(saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -312,112 +320,122 @@
                 }
             } catch(e) {}
         }
-        // inicialização padrão (tudo vazio, semPalpite false)
-        palpites = jogosData.map(() => ({ casa: "", fora: "", semPalpite: false }));
+        palpites = jogosData.map(() => ({ tipo: null, semPalpite: false }));
     }
 
     function salvarPalpitesLocal() {
-        localStorage.setItem("bolao_palpites_rodada1", JSON.stringify(palpites));
+        localStorage.setItem("bolao_palpites_rodada1_vencedor", JSON.stringify(palpites));
     }
 
-    // salvar nome/email também
     function salvarUsuarioLocal() {
         const nome = document.getElementById("nomeParticipante").value;
         const email = document.getElementById("emailParticipante").value;
-        localStorage.setItem("bolao_nome", nome);
-        localStorage.setItem("bolao_email", email);
+        localStorage.setItem("bolao_nome_vencedor", nome);
+        localStorage.setItem("bolao_email_vencedor", email);
     }
 
     function carregarUsuarioLocal() {
-        const nomeSalvo = localStorage.getItem("bolao_nome") || "";
-        const emailSalvo = localStorage.getItem("bolao_email") || "";
+        const nomeSalvo = localStorage.getItem("bolao_nome_vencedor") || "";
+        const emailSalvo = localStorage.getItem("bolao_email_vencedor") || "";
         document.getElementById("nomeParticipante").value = nomeSalvo;
         document.getElementById("emailParticipante").value = emailSalvo;
     }
 
-    // atualiza resumo dinâmico em tela
+    function getPalpiteTexto(palpite, jogo) {
+        if(palpite.semPalpite) return "🚫 Sem palpite";
+        if(!palpite.tipo) return "⏳ Pendente";
+        if(palpite.tipo === "casa") return `🏠 ${jogo.timeCasa}`;
+        if(palpite.tipo === "fora") return `✈️ ${jogo.timeFora}`;
+        if(palpite.tipo === "empate") return "🤝 Empate";
+        return "❓";
+    }
+
     function atualizarResumo() {
-        let preenchidos = 0;
         let linhas = [];
+        let completos = 0;
         for(let i=0; i<jogosData.length; i++) {
             const jogo = jogosData[i];
             const palpite = palpites[i];
-            let placarStr = "";
+            let status = "";
             if(palpite.semPalpite) {
-                placarStr = "⚪ Sem palpite";
-            } else if(palpite.casa !== "" && palpite.fora !== "") {
-                placarStr = `${palpite.casa} x ${palpite.fora}`;
-                preenchidos++;
-            } else if(palpite.casa !== "" || palpite.fora !== "") {
-                placarStr = "⚠️ Incompleto";
+                status = "🚫 Sem palpite";
+            } else if(palpite.tipo) {
+                status = getPalpiteTexto(palpite, jogo);
+                completos++;
             } else {
-                placarStr = "⏳ Aguardando palpite";
+                status = "⏳ Aguardando palpite";
             }
-            if(placarStr !== "⏳ Aguardando palpite" || palpite.casa !== "" || palpite.fora !== "") {
-                linhas.push(`${jogo.timeCasa} vs ${jogo.timeFora} → ${placarStr}`);
-            } else {
-                linhas.push(`${jogo.timeCasa} vs ${jogo.timeFora} → sem palpite ainda`);
-            }
+            linhas.push(`${jogo.timeCasa} vs ${jogo.timeFora} → ${status}`);
         }
-        const totalCompletos = palpites.filter(p => !p.semPalpite && p.casa !== "" && p.fora !== "").length;
         const totalSem = palpites.filter(p => p.semPalpite).length;
-        const header = `✅ Palpites completos: ${totalCompletos} / ${jogosData.length}  |  Sem palpite: ${totalSem}\n`;
-        document.getElementById("resumoText").innerHTML = header + linhas.slice(0, 12).join("\n") + (linhas.length > 12 ? "\n... (+ mais jogos)" : "");
+        const header = `✅ Palpites definidos: ${completos} / ${jogosData.length}  |  Sem palpite: ${totalSem}\n`;
+        document.getElementById("resumoTexto").innerHTML = header + linhas.join("\n");
     }
 
-    // renderizar toda interface dos jogos
     function renderizarJogos() {
         const container = document.getElementById("jogosContainer");
         if(!container) return;
         container.innerHTML = "";
+        
         for(let idx = 0; idx < jogosData.length; idx++) {
             const jogo = jogosData[idx];
             const palpiteAtual = palpites[idx];
+            
             const card = document.createElement("div");
             card.className = "card-jogo";
-            card.setAttribute("data-idx", idx);
             
-            // badge grupo
+            // Grupo
             const grupoSpan = document.createElement("div");
             grupoSpan.className = "grupo-badge";
             grupoSpan.innerText = jogo.grupo;
             
+            // Nomes dos times
             const nomesDiv = document.createElement("div");
             nomesDiv.className = "jogo-nomes";
-            nomesDiv.innerHTML = `<span class="time">${jogo.timeCasa}</span> <span>🆚</span> <span class="time">${jogo.timeFora}</span>`;
+            nomesDiv.innerHTML = `<span class="time">${jogo.timeCasa}</span><span class="vs">VS</span><span class="time">${jogo.timeFora}</span>`;
             
-            const placarDiv = document.createElement("div");
-            placarDiv.className = "placar-inputs";
-            const inputCasa = document.createElement("input");
-            inputCasa.type = "number";
-            inputCasa.placeholder = "0";
-            inputCasa.min = "0";
-            inputCasa.max = "30";
-            inputCasa.value = palpiteAtual.semPalpite ? "" : (palpiteAtual.casa !== undefined ? palpiteAtual.casa : "");
-            inputCasa.disabled = palpiteAtual.semPalpite;
-            inputCasa.classList.add("gols-casa");
+            // Opções de palpite
+            const opcoesDiv = document.createElement("div");
+            opcoesDiv.className = "opcoes-palpite";
             
-            const vsSpan = document.createElement("span");
-            vsSpan.className = "vs";
-            vsSpan.innerText = "X";
+            const criarOpcao = (valor, texto, extraClass = "") => {
+                const btn = document.createElement("div");
+                btn.className = `opcao-btn ${extraClass}`;
+                btn.innerText = texto;
+                btn.setAttribute("data-opcao", valor);
+                if(!palpiteAtual.semPalpite && palpiteAtual.tipo === valor) {
+                    btn.classList.add("selected");
+                }
+                btn.addEventListener("click", () => {
+                    if(palpiteAtual.semPalpite) return;
+                    // Remove selected de todos os botoes desta opcoesDiv
+                    Array.from(opcoesDiv.children).forEach(child => child.classList.remove("selected"));
+                    btn.classList.add("selected");
+                    palpites[idx].tipo = valor;
+                    palpites[idx].semPalpite = false;
+                    // garantir que checkbox sem palpite desmarque
+                    const checkSem = card.querySelector(".check-sem-palpite");
+                    if(checkSem) checkSem.checked = false;
+                    salvarPalpitesLocal();
+                    atualizarResumo();
+                });
+                return btn;
+            };
             
-            const inputFora = document.createElement("input");
-            inputFora.type = "number";
-            inputFora.placeholder = "0";
-            inputFora.min = "0";
-            inputFora.max = "30";
-            inputFora.value = palpiteAtual.semPalpite ? "" : (palpiteAtual.fora !== undefined ? palpiteAtual.fora : "");
-            inputFora.disabled = palpiteAtual.semPalpite;
-            inputFora.classList.add("gols-fora");
+            const btnCasa = criarOpcao("casa", `🏠 ${jogo.timeCasa.substring(0,12)}`, "opcao-casa");
+            const btnEmpate = criarOpcao("empate", "🤝 EMPATE", "opcao-empate");
+            const btnFora = criarOpcao("fora", `✈️ ${jogo.timeFora.substring(0,12)}`, "opcao-fora");
             
-            placarDiv.appendChild(inputCasa);
-            placarDiv.appendChild(vsSpan);
-            placarDiv.appendChild(inputFora);
+            opcoesDiv.appendChild(btnCasa);
+            opcoesDiv.appendChild(btnEmpate);
+            opcoesDiv.appendChild(btnFora);
             
+            // Sem palpite
             const semDiv = document.createElement("div");
             semDiv.className = "sem-palpite";
             const checkSem = document.createElement("input");
             checkSem.type = "checkbox";
+            checkSem.className = "check-sem-palpite";
             checkSem.id = `sem_${idx}`;
             checkSem.checked = palpiteAtual.semPalpite || false;
             const labelSem = document.createElement("label");
@@ -426,176 +444,148 @@
             semDiv.appendChild(checkSem);
             semDiv.appendChild(labelSem);
             
-            card.appendChild(grupoSpan);
-            card.appendChild(nomesDiv);
-            card.appendChild(placarDiv);
-            card.appendChild(semDiv);
-            
-            // Eventos para atualizar o estado
-            function updateFromInputs() {
-                const isChecked = checkSem.checked;
-                const casaVal = isChecked ? "" : inputCasa.value;
-                const foraVal = isChecked ? "" : inputFora.value;
-                palpites[idx].semPalpite = isChecked;
-                palpites[idx].casa = isChecked ? "" : (casaVal === "" ? "" : String(parseInt(casaVal) || 0));
-                palpites[idx].fora = isChecked ? "" : (foraVal === "" ? "" : String(parseInt(foraVal) || 0));
-                // se não tem palpite, limpa os valores de gols
-                if(isChecked) {
-                    inputCasa.value = "";
-                    inputFora.value = "";
-                } else {
-                    if(palpites[idx].casa === "") palpites[idx].casa = "";
-                    if(palpites[idx].fora === "") palpites[idx].fora = "";
-                    inputCasa.value = palpites[idx].casa !== "" ? palpites[idx].casa : "";
-                    inputFora.value = palpites[idx].fora !== "" ? palpites[idx].fora : "";
-                }
-                inputCasa.disabled = isChecked;
-                inputFora.disabled = isChecked;
-                salvarPalpitesLocal();
-                atualizarResumo();
+            // status adicional
+            const statusSpan = document.createElement("div");
+            statusSpan.className = "status-palpite";
+            function atualizarStatus() {
+                if(palpites[idx].semPalpite) statusSpan.innerText = "⚪ Sem palpite marcado";
+                else if(palpites[idx].tipo) statusSpan.innerText = `Palpite: ${getPalpiteTexto(palpites[idx], jogo)}`;
+                else statusSpan.innerText = "🔘 Selecione um dos botões";
             }
+            atualizarStatus();
             
-            inputCasa.addEventListener("input", () => {
-                if(checkSem.checked) return;
-                let val = inputCasa.value;
-                if(val !== "") val = Math.max(0, parseInt(val) || 0);
-                palpites[idx].casa = val === "" ? "" : String(val);
-                palpites[idx].semPalpite = false;
-                checkSem.checked = false;
-                inputFora.disabled = false;
-                inputCasa.disabled = false;
-                salvarPalpitesLocal();
-                atualizarResumo();
-            });
-            
-            inputFora.addEventListener("input", () => {
-                if(checkSem.checked) return;
-                let val = inputFora.value;
-                if(val !== "") val = Math.max(0, parseInt(val) || 0);
-                palpites[idx].fora = val === "" ? "" : String(val);
-                palpites[idx].semPalpite = false;
-                checkSem.checked = false;
-                inputCasa.disabled = false;
-                inputFora.disabled = false;
-                salvarPalpitesLocal();
-                atualizarResumo();
-            });
-            
+            // evento do checkbox
             checkSem.addEventListener("change", (e) => {
                 const isChecked = e.target.checked;
                 palpites[idx].semPalpite = isChecked;
                 if(isChecked) {
-                    palpites[idx].casa = "";
-                    palpites[idx].fora = "";
-                    inputCasa.value = "";
-                    inputFora.value = "";
-                } else {
-                    // ao desmarcar, mantém valores atuais dos inputs
-                    let casaVal = inputCasa.value;
-                    let foraVal = inputFora.value;
-                    if(casaVal !== "") palpites[idx].casa = String(parseInt(casaVal) || 0);
-                    if(foraVal !== "") palpites[idx].fora = String(parseInt(foraVal) || 0);
-                    if(casaVal === "") palpites[idx].casa = "";
-                    if(foraVal === "") palpites[idx].fora = "";
-                }
-                inputCasa.disabled = isChecked;
-                inputFora.disabled = isChecked;
-                if(!isChecked && (inputCasa.value === "" || inputFora.value === "")) {
-                    // se estiver vazio, não força número
+                    palpites[idx].tipo = null;
+                    // desmarcar seleção visual dos botões
+                    Array.from(opcoesDiv.children).forEach(btn => btn.classList.remove("selected"));
                 }
                 salvarPalpitesLocal();
+                atualizarStatus();
                 atualizarResumo();
             });
             
+            // também atualizar status quando palpite mudar (já tem nos eventos dos botoes)
+            const observer = () => {
+                atualizarStatus();
+                atualizarResumo();
+            };
+            // override nos botoes originais? já chamam salvar e resumo, mas vamos adicionar atualizacao de status ali
+            // vamos substituir os eventos originais para manter status.
+            // mas como ja foi adicionado, vou patch nos botoes para chamar atualização extra.
+            const botoes = [btnCasa, btnEmpate, btnFora];
+            botoes.forEach(btn => {
+                const oldClick = btn.onclick;
+                btn.onclick = (e) => {
+                    if(palpites[idx].semPalpite) return;
+                    Array.from(opcoesDiv.children).forEach(c => c.classList.remove("selected"));
+                    btn.classList.add("selected");
+                    palpites[idx].tipo = btn.getAttribute("data-opcao");
+                    palpites[idx].semPalpite = false;
+                    if(checkSem) checkSem.checked = false;
+                    salvarPalpitesLocal();
+                    atualizarStatus();
+                    atualizarResumo();
+                };
+            });
+            
+            card.appendChild(grupoSpan);
+            card.appendChild(nomesDiv);
+            card.appendChild(opcoesDiv);
+            card.appendChild(semDiv);
+            card.appendChild(statusSpan);
             container.appendChild(card);
         }
         atualizarResumo();
     }
     
-    // função para gerar o PDF usando html2canvas e jsPDF (com conteúdo customizado e elegante)
+    // Gerar PDF (agora com texto descritivo: vencedor ou empate)
     async function gerarPDF() {
         const nome = document.getElementById("nomeParticipante").value.trim();
         const email = document.getElementById("emailParticipante").value.trim();
         if(nome === "" || email === "") {
-            alert("⚠️ Por favor, preencha seu NOME e E-MAIL antes de gerar o PDF.");
+            alert("⚠️ Preencha NOME e E-MAIL para gerar o PDF.");
             return;
         }
         salvarUsuarioLocal();
         
-        // Construir elemento HTML temporário para o PDF (com estilo e tabela de palpites)
         const now = new Date();
         const dataStr = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
         
-        // montar lista de palpites formatada
         let linhasTabela = "";
+        let completosCount = 0;
         for(let i=0; i<jogosData.length; i++) {
             const j = jogosData[i];
             const p = palpites[i];
-            let palpiteTexto = "";
+            let palpiteDesc = "";
             if(p.semPalpite) {
-                palpiteTexto = "🚫 Sem palpite";
-            } else if(p.casa !== "" && p.fora !== "") {
-                palpiteTexto = `${p.casa} x ${p.fora}`;
-            } else if(p.casa !== "" || p.fora !== "") {
-                palpiteTexto = "⚠️ Incompleto";
+                palpiteDesc = "🚫 Sem palpite";
+            } else if(p.tipo === "casa") {
+                palpiteDesc = `🏆 ${j.timeCasa}`;
+                completosCount++;
+            } else if(p.tipo === "fora") {
+                palpiteDesc = `🏆 ${j.timeFora}`;
+                completosCount++;
+            } else if(p.tipo === "empate") {
+                palpiteDesc = "🤝 Empate";
+                completosCount++;
             } else {
-                palpiteTexto = "❌ Não informado";
+                palpiteDesc = "❌ Não informado";
             }
             linhasTabela += `
                 <tr style="border-bottom:1px solid #ddd;">
                     <td style="padding:8px; font-size:11px;">${j.grupo}</td>
-                    <td style="padding:8px;">${j.timeCasa} vs ${j.timeFora}</td>
-                    <td style="padding:8px; text-align:center; font-weight:bold;">${palpiteTexto}</td>
+                    <td style="padding:8px;">${j.timeCasa} 🆚 ${j.timeFora}</td>
+                    <td style="padding:8px; text-align:center; font-weight:bold;">${palpiteDesc}</td>
                 </tr>
             `;
         }
-        
-        const totalCompletos = palpites.filter(p => !p.semPalpite && p.casa !== "" && p.fora !== "").length;
         const totalSem = palpites.filter(p => p.semPalpite).length;
         
         const pdfHtml = `
-            <div id="pdfContentWrapper" style="font-family: 'Segoe UI', Arial, sans-serif; width:100%; max-width:1000px; background: white; padding: 20px; border-radius: 24px;">
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; width:100%; background: white; padding: 20px;">
                 <div style="text-align: center; border-bottom: 3px solid #ffcc00; margin-bottom: 20px;">
                     <h1 style="color: #1f3b2c;">🏆 BOLÃO COPA 2026 - 1ª RODADA</h1>
                     <p><strong>Participante:</strong> ${nome} (${email})</p>
-                    <p><strong>Data de geração:</strong> ${dataStr}</p>
+                    <p><strong>Data:</strong> ${dataStr}</p>
+                    <p><strong>Regra:</strong> Palpite no VENCEDOR ou EMPATE</p>
                 </div>
-                <div style="margin: 15px 0; background: #f4f0e0; border-radius: 20px; padding: 10px;">
-                    <span>✅ Palpites completos: ${totalCompletos} / ${jogosData.length} &nbsp;&nbsp;| 🚫 Sem palpite: ${totalSem}</span>
+                <div style="margin: 10px 0; background:#f4f0e0; padding: 8px; border-radius: 16px; text-align:center;">
+                    ✅ Palpites realizados: ${completosCount} / ${jogosData.length} &nbsp;&nbsp;| 🚫 Sem palpite: ${totalSem}
                 </div>
-                <table style="width:100%; border-collapse: collapse; margin-top: 10px;">
+                <table style="width:100%; border-collapse: collapse; margin-top: 12px;">
                     <thead>
                         <tr><th style="background:#ffcc00; padding:10px; text-align:left;">Grupo</th>
                             <th style="background:#ffcc00; padding:10px; text-align:left;">Jogo</th>
-                            <th style="background:#ffcc00; padding:10px; text-align:center;">Palpite</th>
+                            <th style="background:#ffcc00; padding:10px; text-align:center;">Palpite (Vencedor/Empate)</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        ${linhasTabela}
-                    </tbody>
+                    <tbody>${linhasTabela}</tbody>
                 </table>
                 <div style="margin-top: 30px; text-align: center; font-size: 10px; color: gray; border-top: 1px solid #ccc; padding-top: 12px;">
-                    Documento gerado pelo Bolão Amigos • Copa do Mundo 2026 • 1ª Rodada
+                    Documento gerado pelo Bolão Amigos • Copa do Mundo 2026 • 1ª Rodada • Palpite simples
                 </div>
             </div>
         `;
         
-        // Criar um iframe ou div oculta para renderizar e capturar
         const previewDiv = document.createElement("div");
         previewDiv.style.position = "fixed";
         previewDiv.style.top = "-9999px";
         previewDiv.style.left = "-9999px";
-        previewDiv.style.backgroundColor = "white";
+        previewDiv.style.background = "white";
         previewDiv.innerHTML = pdfHtml;
         document.body.appendChild(previewDiv);
         
         try {
             const element = previewDiv.firstChild;
-            const canvas = await html2canvas(element, { scale: 2, logging: false, useCORS: false, backgroundColor: "#ffffff" });
+            const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#ffffff" });
             const imgData = canvas.toDataURL("image/png");
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-            const imgWidth = 210; // A4 largura mm
+            const imgWidth = 210;
             const pageHeight = 297;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             let position = 0;
@@ -610,7 +600,7 @@
                     position -= pageHeight;
                 }
             }
-            const nomeArquivo = `bolao_${nome.replace(/[^a-z0-9]/gi, '_')}_rodada1.pdf`;
+            const nomeArquivo = `bolao_${nome.replace(/[^a-z0-9]/gi, '_')}_rodada1_vencedor.pdf`;
             pdf.save(nomeArquivo);
         } catch(err) {
             console.error(err);
@@ -620,23 +610,27 @@
         }
     }
     
-    // sincronizar dados com inputs e localstorage quando usuario digitar nome/email
-    function bindUserEvents() {
+    function bindEvents() {
         const nomeInput = document.getElementById("nomeParticipante");
         const emailInput = document.getElementById("emailParticipante");
         nomeInput.addEventListener("input", salvarUsuarioLocal);
         emailInput.addEventListener("input", salvarUsuarioLocal);
+        document.getElementById("btnGerarPDF").addEventListener("click", gerarPDF);
     }
     
-    // Inicialização completa
     function init() {
         carregarPalpitesLocal();
         carregarUsuarioLocal();
         renderizarJogos();
-        bindUserEvents();
-        // garantir que se alterar fora do escopo, salve ao clicar no PDF também, mas já atualiza resumo a cada evento
-        const btnPDF = document.getElementById("btnGerarPDF");
-        btnPDF.addEventListener("click", gerarPDF);
+        bindEvents();
+        // Garantir que o resumo tenha o elemento correto
+        if(!document.getElementById("resumoTexto")) {
+            const el = document.getElementById("resumoText");
+            if(el) el.id = "resumoTexto";
+        } else {
+            document.getElementById("resumoTexto").id = "resumoTexto";
+        }
+        atualizarResumo();
     }
     
     init();
