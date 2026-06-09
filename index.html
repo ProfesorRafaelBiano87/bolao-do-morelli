@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bolão Copa 2026 - Palpite Vencedor/Empate</title>
-    <!-- Bibliotecas para geração de PDF - versões mais estáveis -->
+    <!-- Biblioteca para capturar tela e gerar imagem -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -229,7 +228,7 @@
             transition: 0.2s;
             color: #1f3b2c;
         }
-        .btn-pdf {
+        .btn-img {
             background: #1f3b2c;
             color: #ffcc00;
             width: 100%;
@@ -237,7 +236,7 @@
             font-size: 1.2rem;
             margin-top: 10px;
         }
-        .btn-pdf:hover {
+        .btn-img:hover {
             background: #0f2a1a;
             transform: scale(1.01);
         }
@@ -280,8 +279,8 @@
     <h2 style="font-size: 1.2rem; margin-bottom: 8px;">🗓️ JOGOS DA 1ª RODADA</h2>
     <div id="jogosContainer" class="jogos-grid"></div>
 
-    <button id="btnGerarPDF" class="btn-pdf">📄 GERAR MEU PDF COM OS PALPITES</button>
-    <footer>Clique no time que você acredita que vencerá ou em EMPATE. Seu progresso é salvo automaticamente.</footer>
+    <button id="btnGerarIMG" class="btn-img">🖼️ GERAR IMAGEM COM MEUS PALPITES</button>
+    <footer>Clique no time que você acredita que vencerá ou em EMPATE. Seu progresso é salvo automaticamente. A imagem será baixada em PNG.</footer>
 </div>
 
 <script>
@@ -483,17 +482,17 @@
         updateResumo();
     }
     
-    async function gerarPDF() {
+    async function gerarImagem() {
         const nome = document.getElementById("nomeParticipante").value.trim();
         const email = document.getElementById("emailParticipante").value.trim();
         
         if(!nome) {
-            alert("⚠️ Por favor, preencha seu NOME antes de gerar o PDF.");
+            alert("⚠️ Por favor, preencha seu NOME antes de gerar a imagem.");
             document.getElementById("nomeParticipante").focus();
             return;
         }
         if(!email) {
-            alert("⚠️ Por favor, preencha seu E-MAIL antes de gerar o PDF.");
+            alert("⚠️ Por favor, preencha seu E-MAIL antes de gerar a imagem.");
             document.getElementById("emailParticipante").focus();
             return;
         }
@@ -501,9 +500,9 @@
         saveUser();
         
         // Mostrar loading
-        const btn = document.getElementById("btnGerarPDF");
+        const btn = document.getElementById("btnGerarIMG");
         const textoOriginal = btn.innerText;
-        btn.innerText = "⏳ GERANDO PDF...";
+        btn.innerText = "⏳ GERANDO IMAGEM...";
         btn.disabled = true;
         
         const now = new Date();
@@ -515,8 +514,10 @@
             const j = jogosData[i];
             const p = palpites[i];
             let palpiteTexto = "";
+            let estiloExtra = "";
             if(p.semPalpite) {
-                palpiteTexto = "🚫 SEM PALPITE";
+                palpiteTexto = "SEM PALPITE";
+                estiloExtra = "style='color: #999;'";
             } else if(p.vencedor === "casa") {
                 palpiteTexto = j.casa;
                 palpitesFeitos++;
@@ -528,49 +529,50 @@
                 palpitesFeitos++;
             } else {
                 palpiteTexto = "NÃO INFORMADO";
+                estiloExtra = "style='color: #c0392b;'";
             }
             linhasTabela += `
-                <tr>
-                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${j.grupo}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px;">${j.casa} vs ${j.fora}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center; font-weight: bold;">${palpiteTexto}</td>
+                <tr style="border-bottom: 1px solid #e0e0e0;">
+                    <td style="padding: 10px 8px; font-size: 12px; font-weight: bold; background: #f9f9f9;">${j.grupo}</td>
+                    <td style="padding: 10px 8px; font-size: 13px;">${j.casa} 🆚 ${j.fora}</td>
+                    <td style="padding: 10px 8px; text-align: center; font-weight: bold; font-size: 13px; background: #fef9e8;" ${estiloExtra}>${palpiteTexto}</td>
                 </tr>
             `;
         }
         
         const totalSem = palpites.filter(p => p.semPalpite).length;
         
-        // Criar elemento para o PDF
-        const pdfContent = document.createElement("div");
-        pdfContent.style.position = "absolute";
-        pdfContent.style.left = "-9999px";
-        pdfContent.style.top = "-9999px";
-        pdfContent.style.width = "800px";
-        pdfContent.style.backgroundColor = "white";
-        pdfContent.style.padding = "30px";
-        pdfContent.style.fontFamily = "Arial, sans-serif";
-        pdfContent.innerHTML = `
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h1 style="color: #1f3b2c; margin: 0;">🏆 BOLÃO COPA DO MUNDO 2026</h1>
-                <h2 style="color: #2c5a3b; margin: 10px 0;">1ª RODADA - PALPITES</h2>
-                <hr style="border: 2px solid #ffcc00;">
+        // Criar elemento para a imagem
+        const imageContent = document.createElement("div");
+        imageContent.style.width = "900px";
+        imageContent.style.backgroundColor = "white";
+        imageContent.style.padding = "40px";
+        imageContent.style.fontFamily = "Arial, sans-serif";
+        imageContent.style.borderRadius = "16px";
+        imageContent.style.boxShadow = "0 10px 30px rgba(0,0,0,0.1)";
+        imageContent.innerHTML = `
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div style="font-size: 48px; margin-bottom: 10px;">⚽🏆</div>
+                <h1 style="color: #1f3b2c; margin: 0; font-size: 28px;">BOLÃO COPA DO MUNDO 2026</h1>
+                <h2 style="color: #2c5a3b; margin: 8px 0; font-size: 20px;">1ª RODADA - PALPITES</h2>
+                <div style="width: 100px; height: 4px; background: #ffcc00; margin: 15px auto;"></div>
             </div>
             
-            <div style="margin-bottom: 25px; background: #f5f5f5; padding: 15px; border-radius: 8px;">
-                <p><strong>👤 Participante:</strong> ${nome}</p>
-                <p><strong>📧 E-mail:</strong> ${email}</p>
-                <p><strong>📅 Data de geração:</strong> ${dataHora}</p>
-                <hr style="margin: 10px 0;">
-                <p><strong>✅ Total de palpites feitos:</strong> ${palpitesFeitos} / ${jogosData.length}</p>
-                <p><strong>🚫 Jogos sem palpite:</strong> ${totalSem}</p>
+            <div style="margin-bottom: 25px; background: #f0f2e8; padding: 18px; border-radius: 12px;">
+                <p style="margin: 5px 0; font-size: 14px;"><strong>👤 Participante:</strong> ${nome}</p>
+                <p style="margin: 5px 0; font-size: 14px;"><strong>📧 E-mail:</strong> ${email}</p>
+                <p style="margin: 5px 0; font-size: 14px;"><strong>📅 Data de geração:</strong> ${dataHora}</p>
+                <hr style="margin: 12px 0; border-color: #ddd;">
+                <p style="margin: 5px 0; font-size: 13px;"><strong>✅ Total de palpites feitos:</strong> ${palpitesFeitos} / ${jogosData.length}</p>
+                <p style="margin: 5px 0; font-size: 13px;"><strong>🚫 Jogos sem palpite:</strong> ${totalSem}</p>
             </div>
             
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
                 <thead>
                     <tr style="background-color: #ffcc00;">
-                        <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">GRUPO</th>
-                        <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">JOGO</th>
-                        <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">PALPITE</th>
+                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">GRUPO</th>
+                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">JOGO</th>
+                        <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">PALPITE</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -578,57 +580,37 @@
                 </tbody>
             </table>
             
-            <div style="margin-top: 30px; text-align: center; font-size: 10px; color: #888; border-top: 1px solid #ddd; padding-top: 15px;">
+            <div style="margin-top: 30px; text-align: center; font-size: 11px; color: #888; border-top: 2px solid #ffcc00; padding-top: 15px;">
                 <p>Documento gerado pelo sistema Bolão Copa 2026 - Amigos</p>
-                <p>Este documento comprova os palpites de ${nome} para a 1ª rodada</p>
+                <p>Este comprovante certifica os palpites de ${nome} para a 1ª rodada</p>
             </div>
         `;
         
-        document.body.appendChild(pdfContent);
+        document.body.appendChild(imageContent);
         
         try {
-            // Aguardar um pouco para garantir renderização
             await new Promise(resolve => setTimeout(resolve, 100));
             
-            const canvas = await html2canvas(pdfContent, {
-                scale: 2,
+            const canvas = await html2canvas(imageContent, {
+                scale: 2.5,
                 backgroundColor: "#ffffff",
                 logging: false,
                 useCORS: false
             });
             
-            const imgData = canvas.toDataURL("image/png");
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({
-                orientation: "portrait",
-                unit: "mm",
-                format: "a4"
-            });
-            
-            const imgWidth = 210;
-            const pageHeight = 297;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            let position = 0;
-            
-            pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-            
-            let heightLeft = imgHeight - pageHeight;
-            while (heightLeft > 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-            }
-            
+            // Download da imagem
+            const link = document.createElement("a");
             const nomeLimpo = nome.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
-            pdf.save(`bolao_${nomeLimpo}_1rodada.pdf`);
+            link.download = `bolao_${nomeLimpo}_1rodada.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
             
-            alert(`✅ PDF gerado com sucesso!\n\nParticipante: ${nome}\nPalpites registrados: ${palpitesFeitos}`);
+            alert(`✅ Imagem gerada com sucesso!\n\nParticipante: ${nome}\nPalpites registrados: ${palpitesFeitos}\nArquivo salvo como: bolao_${nomeLimpo}_1rodada.png`);
         } catch(error) {
             console.error("Erro detalhado:", error);
-            alert("❌ Erro ao gerar PDF. Verifique o console para mais detalhes.");
+            alert("❌ Erro ao gerar imagem. Tente novamente.");
         } finally {
-            document.body.removeChild(pdfContent);
+            document.body.removeChild(imageContent);
             btn.innerText = textoOriginal;
             btn.disabled = false;
         }
@@ -639,7 +621,7 @@
         loadUser();
         renderJogos();
         
-        document.getElementById("btnGerarPDF").addEventListener("click", gerarPDF);
+        document.getElementById("btnGerarIMG").addEventListener("click", gerarImagem);
         document.getElementById("nomeParticipante").addEventListener("input", () => {
             saveUser();
             updateResumo();
