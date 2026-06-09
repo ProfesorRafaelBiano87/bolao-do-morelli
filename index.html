@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bolão Copa 2026 - Palpite Vencedor/Empate</title>
+    <!-- Bibliotecas para geração de PDF - versões mais estáveis -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -280,44 +281,41 @@
     <div id="jogosContainer" class="jogos-grid"></div>
 
     <button id="btnGerarPDF" class="btn-pdf">📄 GERAR MEU PDF COM OS PALPITES</button>
-    <footer>Clique no time que você acredita que vencerá ou em EMPATE. Seu progresso é salvo automaticamente. O PDF será gerado com seu nome e todos os palpites.</footer>
+    <footer>Clique no time que você acredita que vencerá ou em EMPATE. Seu progresso é salvo automaticamente.</footer>
 </div>
 
 <script>
-    // Lista completa dos jogos da 1ª rodada
     const jogosData = [
-        { grupo: "Grupo A", casa: "México", fora: "África do Sul" },
-        { grupo: "Grupo A", casa: "República da Coreia", fora: "República Tcheca" },
-        { grupo: "Grupo B", casa: "Canadá", fora: "Bósnia e Herzegovina" },
-        { grupo: "Grupo D", casa: "Estados Unidos", fora: "Paraguai" },
-        { grupo: "Grupo B", casa: "Catar", fora: "Suíça" },
-        { grupo: "Grupo C", casa: "Brasil", fora: "Marrocos" },
-        { grupo: "Grupo C", casa: "Haiti", fora: "Escócia" },
-        { grupo: "Grupo D", casa: "Austrália", fora: "Turquia" },
-        { grupo: "Grupo E", casa: "Alemanha", fora: "Curaçau" },
-        { grupo: "Grupo E", casa: "Costa do Marfim", fora: "Equador" },
-        { grupo: "Grupo F", casa: "Holanda", fora: "Japão" },
-        { grupo: "Grupo F", casa: "Suécia", fora: "Tunísia" },
-        { grupo: "Grupo H", casa: "Espanha", fora: "Cabo Verde" },
-        { grupo: "Grupo H", casa: "Arábia Saudita", fora: "Uruguai" },
-        { grupo: "Grupo G", casa: "Bélgica", fora: "Egito" },
-        { grupo: "Grupo G", casa: "Irã", fora: "Nova Zelândia" },
-        { grupo: "Grupo J", casa: "Áustria", fora: "Jordânia" },
-        { grupo: "Grupo I", casa: "França", fora: "Senegal" },
-        { grupo: "Grupo I", casa: "Iraque", fora: "Noruega" },
-        { grupo: "Grupo J", casa: "Argentina", fora: "Argélia" },
-        { grupo: "Grupo K", casa: "Portugal", fora: "República Democrática do Congo" },
-        { grupo: "Grupo L", casa: "Inglaterra", fora: "Croácia" },
-        { grupo: "Grupo L", casa: "Gana", fora: "Panamá" },
-        { grupo: "Grupo K", casa: "Uzbequistão", fora: "Colômbia" }
+        { grupo: "A", casa: "México", fora: "África do Sul" },
+        { grupo: "A", casa: "República da Coreia", fora: "República Tcheca" },
+        { grupo: "B", casa: "Canadá", fora: "Bósnia e Herzegovina" },
+        { grupo: "D", casa: "Estados Unidos", fora: "Paraguai" },
+        { grupo: "B", casa: "Catar", fora: "Suíça" },
+        { grupo: "C", casa: "Brasil", fora: "Marrocos" },
+        { grupo: "C", casa: "Haiti", fora: "Escócia" },
+        { grupo: "D", casa: "Austrália", fora: "Turquia" },
+        { grupo: "E", casa: "Alemanha", fora: "Curaçau" },
+        { grupo: "E", casa: "Costa do Marfim", fora: "Equador" },
+        { grupo: "F", casa: "Holanda", fora: "Japão" },
+        { grupo: "F", casa: "Suécia", fora: "Tunísia" },
+        { grupo: "H", casa: "Espanha", fora: "Cabo Verde" },
+        { grupo: "H", casa: "Arábia Saudita", fora: "Uruguai" },
+        { grupo: "G", casa: "Bélgica", fora: "Egito" },
+        { grupo: "G", casa: "Irã", fora: "Nova Zelândia" },
+        { grupo: "J", casa: "Áustria", fora: "Jordânia" },
+        { grupo: "I", casa: "França", fora: "Senegal" },
+        { grupo: "I", casa: "Iraque", fora: "Noruega" },
+        { grupo: "J", casa: "Argentina", fora: "Argélia" },
+        { grupo: "K", casa: "Portugal", fora: "República Democrática do Congo" },
+        { grupo: "L", casa: "Inglaterra", fora: "Croácia" },
+        { grupo: "L", casa: "Gana", fora: "Panamá" },
+        { grupo: "K", casa: "Uzbequistão", fora: "Colômbia" }
     ];
 
-    // Estrutura do palpite: { vencedor: "casa" | "fora" | "empate" | null, semPalpite: boolean }
     let palpites = [];
 
-    // Carregar dados salvos
     function loadFromStorage() {
-        const saved = localStorage.getItem("bolao2026_rodada1_vencedor");
+        const saved = localStorage.getItem("bolao2026_rodada1");
         if(saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -331,7 +329,7 @@
     }
 
     function saveToStorage() {
-        localStorage.setItem("bolao2026_rodada1_vencedor", JSON.stringify(palpites));
+        localStorage.setItem("bolao2026_rodada1", JSON.stringify(palpites));
     }
 
     function saveUser() {
@@ -387,7 +385,7 @@
             
             const grupoSpan = document.createElement("div");
             grupoSpan.className = "grupo-badge";
-            grupoSpan.innerText = jogo.grupo;
+            grupoSpan.innerText = `Grupo ${jogo.grupo}`;
             
             const nomesDiv = document.createElement("div");
             nomesDiv.className = "jogo-nomes";
@@ -402,7 +400,7 @@
             
             const btnCasa = document.createElement("div");
             btnCasa.className = "opcao-btn";
-            btnCasa.innerText = `🏠 ${jogo.casa.substring(0,14)}`;
+            btnCasa.innerText = `🏠 ${jogo.casa}`;
             if(palpiteAtual.vencedor === "casa" && !palpiteAtual.semPalpite) btnCasa.classList.add("selected");
             
             const btnEmpate = document.createElement("div");
@@ -412,7 +410,7 @@
             
             const btnFora = document.createElement("div");
             btnFora.className = "opcao-btn";
-            btnFora.innerText = `✈️ ${jogo.fora.substring(0,14)}`;
+            btnFora.innerText = `✈️ ${jogo.fora}`;
             if(palpiteAtual.vencedor === "fora" && !palpiteAtual.semPalpite) btnFora.classList.add("selected");
             
             const setPalpite = (tipo) => {
@@ -469,7 +467,7 @@
                 if(palpites[i].semPalpite) statusSpan.innerText = "⚪ Sem palpite marcado";
                 else if(palpites[i].vencedor === "casa") statusSpan.innerText = `✅ Palpite: ${jogo.casa}`;
                 else if(palpites[i].vencedor === "fora") statusSpan.innerText = `✅ Palpite: ${jogo.fora}`;
-                else if(palpites[i].vencedor === "empate") statusSpan.innerText = `✅ Palpite: Empate`;
+                else if(palpites[i].vencedor === "empate") statusSpan.innerText = "✅ Palpite: Empate";
                 else statusSpan.innerText = "🔘 Clique em um time ou EMPATE";
             };
             
@@ -502,10 +500,16 @@
         
         saveUser();
         
+        // Mostrar loading
+        const btn = document.getElementById("btnGerarPDF");
+        const textoOriginal = btn.innerText;
+        btn.innerText = "⏳ GERANDO PDF...";
+        btn.disabled = true;
+        
         const now = new Date();
-        const dataHora = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
-        let linhasTabela = "";
+        const dataHora = now.toLocaleString("pt-BR");
         let palpitesFeitos = 0;
+        let linhasTabela = "";
         
         for(let i = 0; i < jogosData.length; i++) {
             const j = jogosData[i];
@@ -514,111 +518,119 @@
             if(p.semPalpite) {
                 palpiteTexto = "🚫 SEM PALPITE";
             } else if(p.vencedor === "casa") {
-                palpiteTexto = `🏆 ${j.casa}`;
+                palpiteTexto = j.casa;
                 palpitesFeitos++;
             } else if(p.vencedor === "fora") {
-                palpiteTexto = `🏆 ${j.fora}`;
+                palpiteTexto = j.fora;
                 palpitesFeitos++;
             } else if(p.vencedor === "empate") {
-                palpiteTexto = "🤝 EMPATE";
+                palpiteTexto = "EMPATE";
                 palpitesFeitos++;
             } else {
-                palpiteTexto = "❌ NÃO INFORMADO";
+                palpiteTexto = "NÃO INFORMADO";
             }
             linhasTabela += `
-                <tr style="border-bottom: 1px solid #e0e0e0;">
-                    <td style="padding: 10px 8px; font-size: 11px; width: 70px;">${j.grupo}</td>
-                    <td style="padding: 10px 8px; font-size: 12px;">${j.casa} 🆚 ${j.fora}</td>
-                    <td style="padding: 10px 8px; text-align: center; font-weight: bold; font-size: 12px;">${palpiteTexto}</td>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${j.grupo}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">${j.casa} vs ${j.fora}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px; text-align: center; font-weight: bold;">${palpiteTexto}</td>
                 </tr>
             `;
         }
         
         const totalSem = palpites.filter(p => p.semPalpite).length;
-        const totalNaoInformado = palpites.filter(p => !p.semPalpite && p.vencedor === null).length;
         
-        const htmlPDF = `
-            <div style="font-family: 'Segoe UI', Arial, sans-serif; width: 100%; background: white; padding: 30px; border-radius: 16px; box-sizing: border-box;">
-                <div style="text-align: center; border-bottom: 4px solid #ffcc00; padding-bottom: 15px; margin-bottom: 20px;">
-                    <h1 style="color: #1f3b2c; margin: 0; font-size: 24px;">🏆 BOLÃO COPA DO MUNDO 2026</h1>
-                    <h2 style="color: #2c5a3b; margin: 5px 0; font-size: 18px;">1ª RODADA - PALPITES</h2>
-                </div>
-                
-                <div style="background: #f0f2e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-                    <p style="margin: 5px 0; font-size: 14px;"><strong>👤 Participante:</strong> ${nome}</p>
-                    <p style="margin: 5px 0; font-size: 14px;"><strong>📧 E-mail:</strong> ${email}</p>
-                    <p style="margin: 5px 0; font-size: 14px;"><strong>📅 Data de geração:</strong> ${dataHora}</p>
-                    <hr style="margin: 10px 0; border-color: #ddd;">
-                    <p style="margin: 5px 0; font-size: 13px;"><strong>✅ Palpites definidos:</strong> ${palpitesFeitos} / ${jogosData.length}</p>
-                    <p style="margin: 5px 0; font-size: 13px;"><strong>🚫 Sem palpite (optou por não palpitar):</strong> ${totalSem}</p>
-                    <p style="margin: 5px 0; font-size: 13px;"><strong>❌ Não informado (em branco):</strong> ${totalNaoInformado}</p>
-                </div>
-                
-                <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                    <thead>
-                        <tr style="background: #ffcc00;">
-                            <th style="padding: 10px; text-align: left; border-radius: 8px 0 0 0;">GRUPO</th>
-                            <th style="padding: 10px; text-align: left;">JOGO</th>
-                            <th style="padding: 10px; text-align: center;">PALPITE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${linhasTabela}
-                    </tbody>
-                </table>
-                
-                <div style="margin-top: 25px; text-align: center; font-size: 9px; color: #888; border-top: 1px solid #ddd; padding-top: 15px;">
-                    <p>Documento gerado pelo sistema de Bolão Copa 2026 - Amigos</p>
-                    <p>Este documento comprova os palpites de ${nome} para a 1ª rodada da Copa do Mundo 2026</p>
-                </div>
+        // Criar elemento para o PDF
+        const pdfContent = document.createElement("div");
+        pdfContent.style.position = "absolute";
+        pdfContent.style.left = "-9999px";
+        pdfContent.style.top = "-9999px";
+        pdfContent.style.width = "800px";
+        pdfContent.style.backgroundColor = "white";
+        pdfContent.style.padding = "30px";
+        pdfContent.style.fontFamily = "Arial, sans-serif";
+        pdfContent.innerHTML = `
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="color: #1f3b2c; margin: 0;">🏆 BOLÃO COPA DO MUNDO 2026</h1>
+                <h2 style="color: #2c5a3b; margin: 10px 0;">1ª RODADA - PALPITES</h2>
+                <hr style="border: 2px solid #ffcc00;">
+            </div>
+            
+            <div style="margin-bottom: 25px; background: #f5f5f5; padding: 15px; border-radius: 8px;">
+                <p><strong>👤 Participante:</strong> ${nome}</p>
+                <p><strong>📧 E-mail:</strong> ${email}</p>
+                <p><strong>📅 Data de geração:</strong> ${dataHora}</p>
+                <hr style="margin: 10px 0;">
+                <p><strong>✅ Total de palpites feitos:</strong> ${palpitesFeitos} / ${jogosData.length}</p>
+                <p><strong>🚫 Jogos sem palpite:</strong> ${totalSem}</p>
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <thead>
+                    <tr style="background-color: #ffcc00;">
+                        <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">GRUPO</th>
+                        <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">JOGO</th>
+                        <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">PALPITE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${linhasTabela}
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 30px; text-align: center; font-size: 10px; color: #888; border-top: 1px solid #ddd; padding-top: 15px;">
+                <p>Documento gerado pelo sistema Bolão Copa 2026 - Amigos</p>
+                <p>Este documento comprova os palpites de ${nome} para a 1ª rodada</p>
             </div>
         `;
         
-        const tempDiv = document.createElement("div");
-        tempDiv.style.position = "fixed";
-        tempDiv.style.top = "-9999px";
-        tempDiv.style.left = "-9999px";
-        tempDiv.style.background = "white";
-        tempDiv.innerHTML = htmlPDF;
-        document.body.appendChild(tempDiv);
+        document.body.appendChild(pdfContent);
         
         try {
-            const element = tempDiv.firstChild;
-            const canvas = await html2canvas(element, { 
-                scale: 2, 
+            // Aguardar um pouco para garantir renderização
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const canvas = await html2canvas(pdfContent, {
+                scale: 2,
                 backgroundColor: "#ffffff",
                 logging: false,
                 useCORS: false
             });
+            
             const imgData = canvas.toDataURL("image/png");
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+            const pdf = new jsPDF({
+                orientation: "portrait",
+                unit: "mm",
+                format: "a4"
+            });
+            
             const imgWidth = 210;
             const pageHeight = 297;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             let position = 0;
-            pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-            let heightLeft = imgHeight - pageHeight;
-            if (heightLeft > 0) {
-                position = -pageHeight;
-                while (heightLeft > 0) {
-                    pdf.addPage();
-                    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                    position -= pageHeight;
-                }
-            }
-            const nomeLimpo = nome.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
-            const fileName = `bolao_copa2026_${nomeLimpo}_1rodada.pdf`;
-            pdf.save(fileName);
             
-            // Feedback visual
-            alert(`✅ PDF gerado com sucesso!\n\nArquivo: ${fileName}\nParticipante: ${nome}\nPalpites registrados: ${palpitesFeitos}`);
-        } catch(err) {
-            console.error(err);
-            alert("❌ Erro ao gerar PDF. Tente novamente.");
+            pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+            
+            let heightLeft = imgHeight - pageHeight;
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            
+            const nomeLimpo = nome.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
+            pdf.save(`bolao_${nomeLimpo}_1rodada.pdf`);
+            
+            alert(`✅ PDF gerado com sucesso!\n\nParticipante: ${nome}\nPalpites registrados: ${palpitesFeitos}`);
+        } catch(error) {
+            console.error("Erro detalhado:", error);
+            alert("❌ Erro ao gerar PDF. Verifique o console para mais detalhes.");
         } finally {
-            document.body.removeChild(tempDiv);
+            document.body.removeChild(pdfContent);
+            btn.innerText = textoOriginal;
+            btn.disabled = false;
         }
     }
     
@@ -634,7 +646,6 @@
         });
         document.getElementById("emailParticipante").addEventListener("input", saveUser);
         
-        // Atualizar resumo quando nome mudar
         const nomeInput = document.getElementById("nomeParticipante");
         nomeInput.addEventListener("input", updateResumo);
     }
