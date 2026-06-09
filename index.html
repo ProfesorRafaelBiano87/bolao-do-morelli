@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bolão Copa 2026 - Palpite Vencedor/Empate</title>
-    <!-- Bibliotecas para geração de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
@@ -16,28 +15,29 @@
         }
 
         body {
-            background: linear-gradient(145deg, #1a472a 0%, #0e2a1a 100%);
-            padding: 30px 20px;
+            background: linear-gradient(135deg, #1a472a 0%, #0e2a1a 100%);
+            padding: 20px;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 0 auto;
             background: #fef9e8;
-            border-radius: 48px;
+            border-radius: 32px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             overflow: hidden;
-            padding: 20px 25px 40px 25px;
+            padding: 20px 24px 40px 24px;
         }
 
         .header {
             text-align: center;
-            border-bottom: 4px solid #ffcc00;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            border-bottom: 3px solid #ffcc00;
+            margin-bottom: 25px;
+            padding-bottom: 18px;
         }
         .header h1 {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             color: #1f3b2c;
         }
         .header h1 span {
@@ -49,215 +49,220 @@
         .header p {
             color: #2c5a3b;
             font-weight: 500;
-            margin-top: 8px;
+            margin-top: 6px;
+            font-size: 0.9rem;
         }
 
         .user-area {
             background: #e9f0e5;
-            padding: 18px 22px;
-            border-radius: 36px;
+            padding: 16px 20px;
+            border-radius: 28px;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 16px;
+            margin-bottom: 25px;
         }
         .input-group {
             flex: 1;
-            min-width: 200px;
+            min-width: 180px;
         }
         .input-group label {
             font-weight: bold;
             color: #1f3b2c;
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
         }
         .input-group input {
             width: 100%;
-            padding: 12px 18px;
-            border-radius: 60px;
+            padding: 10px 16px;
+            border-radius: 40px;
             border: 1px solid #bfd9b0;
             background: white;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         .input-group input:focus {
             outline: none;
             border-color: #ffcc00;
-            box-shadow: 0 0 0 3px rgba(255,204,0,0.3);
+            box-shadow: 0 0 0 3px rgba(255,204,0,0.2);
         }
 
         .resumo-card {
             background: #ffffffdd;
-            border-radius: 32px;
-            padding: 18px 22px;
-            margin-bottom: 28px;
-            border-left: 8px solid #ffcc00;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            padding: 14px 20px;
+            margin-bottom: 25px;
+            border-left: 6px solid #ffcc00;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
         .resumo-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #1f3b2c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .resumo-texto {
             background: #f4f2e7;
-            padding: 14px;
-            border-radius: 24px;
-            margin-top: 12px;
+            padding: 12px;
+            border-radius: 20px;
+            margin-top: 10px;
             font-family: monospace;
-            font-size: 0.9rem;
-            max-height: 180px;
+            font-size: 0.8rem;
+            max-height: 150px;
             overflow-y: auto;
             white-space: pre-wrap;
+            line-height: 1.4;
         }
 
         .jogos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-            margin: 25px 0 30px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+            margin: 20px 0 25px;
         }
         .card-jogo {
             background: white;
-            border-radius: 28px;
-            padding: 14px 18px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
-            border: 1px solid #e0dccf;
+            border-radius: 20px;
+            padding: 12px 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e8e4d4;
+            transition: all 0.2s;
+        }
+        .card-jogo:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
         .grupo-badge {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             background: #2c5a3b;
             color: white;
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 30px;
-            margin-bottom: 10px;
+            padding: 3px 10px;
+            border-radius: 20px;
             font-weight: bold;
+            margin-bottom: 8px;
         }
         .jogo-nomes {
-            font-weight: 800;
-            font-size: 1rem;
-            margin: 8px 0 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin: 6px 0 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .time {
-            background: #faf4e0;
-            padding: 4px 8px;
-            border-radius: 20px;
-            flex: 1;
+            gap: 6px;
             text-align: center;
         }
-        .vs {
+        .time-nome {
+            background: #f5f0e0;
+            padding: 5px 6px;
+            border-radius: 16px;
+            flex: 1;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .vs-pequeno {
             font-weight: bold;
             background: #ffcc00;
             padding: 4px 10px;
             border-radius: 30px;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
         }
         .opcoes-palpite {
-            margin: 12px 0;
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
+            gap: 8px;
+            margin: 12px 0 8px;
         }
         .opcao-btn {
             flex: 1;
-            min-width: 80px;
-            padding: 10px 8px;
+            padding: 8px 4px;
             border: 2px solid #ddd;
             background: #f9f9f9;
             border-radius: 40px;
             cursor: pointer;
             text-align: center;
             font-weight: bold;
-            transition: all 0.2s;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
+            transition: all 0.15s;
         }
         .opcao-btn.selected {
             background: #ffcc00;
             border-color: #d4a800;
             color: #1f3b2c;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }
-        .opcao-btn[data-opcao="empate"] {
-            background: #e8e0c0;
+        .opcao-empate {
+            background: #fff3cf;
         }
-        .opcao-btn[data-opcao="empate"].selected {
-            background: #ffcc00;
-        }
-        .sem-palpite {
+        .sem-palpite-area {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 12px;
-            padding-top: 8px;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 8px;
+            padding-top: 6px;
             border-top: 1px solid #eee;
+            font-size: 0.7rem;
         }
-        .sem-palpite label {
-            font-size: 0.8rem;
+        .sem-palpite-area label {
             cursor: pointer;
             color: #666;
+        }
+        .status-palpite {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 8px;
+            color: #2c5a3b;
+            font-weight: 500;
+            background: #f0f2e8;
+            padding: 4px;
+            border-radius: 20px;
         }
         button {
             background: #ffcc00;
             border: none;
-            padding: 14px 28px;
+            padding: 12px 24px;
             font-weight: bold;
-            font-size: 1.1rem;
-            border-radius: 60px;
+            font-size: 1rem;
+            border-radius: 50px;
             cursor: pointer;
             transition: 0.2s;
             color: #1f3b2c;
-        }
-        button:hover {
-            background: #e6b800;
-            transform: scale(1.01);
         }
         .btn-pdf {
             background: #1f3b2c;
             color: #ffcc00;
             width: 100%;
-            padding: 16px;
-            font-size: 1.3rem;
+            padding: 14px;
+            font-size: 1.2rem;
             margin-top: 10px;
         }
         .btn-pdf:hover {
-            background: #143120;
+            background: #0f2a1a;
         }
         footer {
             text-align: center;
-            margin-top: 30px;
-            font-size: 0.75rem;
-            color: #5f7355;
-        }
-        .status-palpite {
-            font-size: 0.75rem;
-            text-align: center;
-            margin-top: 8px;
-            color: #2c5a3b;
-            font-weight: 500;
+            margin-top: 25px;
+            font-size: 0.7rem;
+            color: #7c8e72;
         }
         @media (max-width: 700px) {
             .container { padding: 15px; }
-            .opcao-btn { font-size: 0.75rem; padding: 8px 4px; min-width: 60px; }
+            .jogo-nomes { font-size: 0.75rem; }
+            .opcao-btn { font-size: 0.65rem; padding: 6px 2px; }
         }
     </style>
 </head>
 <body>
-<div class="container" id="app">
+<div class="container">
     <div class="header">
         <h1>⚽ BOLÃO <span>COPA 2026</span> 🏆</h1>
-        <p>1ª Rodada • Palpite: VENCEDOR ou EMPATE • Gere seu PDF</p>
+        <p>1ª Rodada • Palpite: VENCEDOR ou EMPATE</p>
     </div>
 
     <div class="user-area">
         <div class="input-group">
-            <label>👤 Seu nome completo</label>
-            <input type="text" id="nomeParticipante" placeholder="Ex: João Silva" autocomplete="off">
+            <label>👤 Seu nome</label>
+            <input type="text" id="nomeParticipante" placeholder="Ex: João Silva">
         </div>
         <div class="input-group">
             <label>📧 E-mail</label>
@@ -267,119 +272,111 @@
 
     <div class="resumo-card">
         <h3>📋 Resumo dos palpites</h3>
-        <div id="resumoText" class="resumo-texto">Nenhum palpite registrado ainda.</div>
+        <div id="resumoTexto" class="resumo-texto">Carregando...</div>
     </div>
 
-    <h2 style="margin-bottom: 6px;">🗓️ JOGOS DA 1ª RODADA</h2>
+    <h2 style="font-size: 1.2rem; margin-bottom: 8px;">🗓️ JOGOS DA 1ª RODADA</h2>
     <div id="jogosContainer" class="jogos-grid"></div>
 
     <button id="btnGerarPDF" class="btn-pdf">📄 GERAR PDF DA 1ª RODADA</button>
-    <footer>Escolha o vencedor ou empate para cada jogo. Seu progresso é salvo automaticamente.</footer>
+    <footer>Clique no time que você acha que vence ou em EMPATE. Progresso salvo automaticamente.</footer>
 </div>
 
 <script>
-    // Lista de jogos (igual fornecida)
     const jogosData = [
-        { grupo: "Grupo A", timeCasa: "México", timeFora: "África do Sul" },
-        { grupo: "Grupo A", timeCasa: "República da Coreia", timeFora: "República Tcheca" },
-        { grupo: "Grupo B", timeCasa: "Canadá", timeFora: "Bósnia e Herzegovina" },
-        { grupo: "Grupo D", timeCasa: "Estados Unidos", timeFora: "Paraguai" },
-        { grupo: "Grupo B", timeCasa: "Catar", timeFora: "Suíça" },
-        { grupo: "Grupo C", timeCasa: "Brasil", timeFora: "Marrocos" },
-        { grupo: "Grupo C", timeCasa: "Haiti", timeFora: "Escócia" },
-        { grupo: "Grupo D", timeCasa: "Austrália", timeFora: "Turquia" },
-        { grupo: "Grupo E", timeCasa: "Alemanha", timeFora: "Curaçau" },
-        { grupo: "Grupo E", timeCasa: "Costa do Marfim", timeFora: "Equador" },
-        { grupo: "Grupo F", timeCasa: "Holanda", timeFora: "Japão" },
-        { grupo: "Grupo F", timeCasa: "Suécia", timeFora: "Tunísia" },
-        { grupo: "Grupo H", timeCasa: "Espanha", timeFora: "Cabo Verde" },
-        { grupo: "Grupo H", timeCasa: "Arábia Saudita", timeFora: "Uruguai" },
-        { grupo: "Grupo G", timeCasa: "Bélgica", timeFora: "Egito" },
-        { grupo: "Grupo G", timeCasa: "Irã", timeFora: "Nova Zelândia" },
-        { grupo: "Grupo J", timeCasa: "Áustria", timeFora: "Jordânia" },
-        { grupo: "Grupo I", timeCasa: "França", timeFora: "Senegal" },
-        { grupo: "Grupo I", timeCasa: "Iraque", timeFora: "Noruega" },
-        { grupo: "Grupo J", timeCasa: "Argentina", timeFora: "Argélia" },
-        { grupo: "Grupo K", timeCasa: "Portugal", timeFora: "República Democrática do Congo" },
-        { grupo: "Grupo L", timeCasa: "Inglaterra", timeFora: "Croácia" },
-        { grupo: "Grupo L", timeCasa: "Gana", timeFora: "Panamá" },
-        { grupo: "Grupo K", timeCasa: "Uzbequistão", timeFora: "Colômbia" }
+        { grupo: "Grupo A", casa: "México", fora: "África do Sul" },
+        { grupo: "Grupo A", casa: "República da Coreia", fora: "República Tcheca" },
+        { grupo: "Grupo B", casa: "Canadá", fora: "Bósnia e Herzegovina" },
+        { grupo: "Grupo D", casa: "Estados Unidos", fora: "Paraguai" },
+        { grupo: "Grupo B", casa: "Catar", fora: "Suíça" },
+        { grupo: "Grupo C", casa: "Brasil", fora: "Marrocos" },
+        { grupo: "Grupo C", casa: "Haiti", fora: "Escócia" },
+        { grupo: "Grupo D", casa: "Austrália", fora: "Turquia" },
+        { grupo: "Grupo E", casa: "Alemanha", fora: "Curaçau" },
+        { grupo: "Grupo E", casa: "Costa do Marfim", fora: "Equador" },
+        { grupo: "Grupo F", casa: "Holanda", fora: "Japão" },
+        { grupo: "Grupo F", casa: "Suécia", fora: "Tunísia" },
+        { grupo: "Grupo H", casa: "Espanha", fora: "Cabo Verde" },
+        { grupo: "Grupo H", casa: "Arábia Saudita", fora: "Uruguai" },
+        { grupo: "Grupo G", casa: "Bélgica", fora: "Egito" },
+        { grupo: "Grupo G", casa: "Irã", fora: "Nova Zelândia" },
+        { grupo: "Grupo J", casa: "Áustria", fora: "Jordânia" },
+        { grupo: "Grupo I", casa: "França", fora: "Senegal" },
+        { grupo: "Grupo I", casa: "Iraque", fora: "Noruega" },
+        { grupo: "Grupo J", casa: "Argentina", fora: "Argélia" },
+        { grupo: "Grupo K", casa: "Portugal", fora: "República Democrática do Congo" },
+        { grupo: "Grupo L", casa: "Inglaterra", fora: "Croácia" },
+        { grupo: "Grupo L", casa: "Gana", fora: "Panamá" },
+        { grupo: "Grupo K", casa: "Uzbequistão", fora: "Colômbia" }
     ];
 
-    // Estrutura: { tipo: "casa" | "fora" | "empate" | null, semPalpite: boolean }
+    // Cada palpite: { vencedor: "casa" | "fora" | "empate" | null, semPalpite: false }
     let palpites = [];
 
-    function carregarPalpitesLocal() {
-        const saved = localStorage.getItem("bolao_palpites_rodada1_vencedor");
+    function loadFromStorage() {
+        const saved = localStorage.getItem("bolao2026_rodada1_vencedor");
         if(saved) {
             try {
                 const parsed = JSON.parse(saved);
-                if(Array.isArray(parsed) && parsed.length === jogosData.length) {
+                if(parsed.length === jogosData.length) {
                     palpites = parsed;
                     return;
                 }
             } catch(e) {}
         }
-        palpites = jogosData.map(() => ({ tipo: null, semPalpite: false }));
+        palpites = jogosData.map(() => ({ vencedor: null, semPalpite: false }));
     }
 
-    function salvarPalpitesLocal() {
-        localStorage.setItem("bolao_palpites_rodada1_vencedor", JSON.stringify(palpites));
+    function saveToStorage() {
+        localStorage.setItem("bolao2026_rodada1_vencedor", JSON.stringify(palpites));
     }
 
-    function salvarUsuarioLocal() {
+    function saveUser() {
         const nome = document.getElementById("nomeParticipante").value;
         const email = document.getElementById("emailParticipante").value;
-        localStorage.setItem("bolao_nome_vencedor", nome);
-        localStorage.setItem("bolao_email_vencedor", email);
+        localStorage.setItem("bolao2026_nome", nome);
+        localStorage.setItem("bolao2026_email", email);
     }
 
-    function carregarUsuarioLocal() {
-        const nomeSalvo = localStorage.getItem("bolao_nome_vencedor") || "";
-        const emailSalvo = localStorage.getItem("bolao_email_vencedor") || "";
-        document.getElementById("nomeParticipante").value = nomeSalvo;
-        document.getElementById("emailParticipante").value = emailSalvo;
+    function loadUser() {
+        const nome = localStorage.getItem("bolao2026_nome") || "";
+        const email = localStorage.getItem("bolao2026_email") || "";
+        document.getElementById("nomeParticipante").value = nome;
+        document.getElementById("emailParticipante").value = email;
     }
 
-    function getPalpiteTexto(palpite, jogo) {
-        if(palpite.semPalpite) return "🚫 Sem palpite";
-        if(!palpite.tipo) return "⏳ Pendente";
-        if(palpite.tipo === "casa") return `🏠 ${jogo.timeCasa}`;
-        if(palpite.tipo === "fora") return `✈️ ${jogo.timeFora}`;
-        if(palpite.tipo === "empate") return "🤝 Empate";
-        return "❓";
+    function getPalpiteDisplay(idx) {
+        const p = palpites[idx];
+        if(p.semPalpite) return "🚫 Sem palpite";
+        if(p.vencedor === "casa") return `🏠 ${jogosData[idx].casa}`;
+        if(p.vencedor === "fora") return `✈️ ${jogosData[idx].fora}`;
+        if(p.vencedor === "empate") return "🤝 Empate";
+        return "⏳ Pendente";
     }
 
-    function atualizarResumo() {
+    function updateResumo() {
+        let definidos = 0;
         let linhas = [];
-        let completos = 0;
-        for(let i=0; i<jogosData.length; i++) {
-            const jogo = jogosData[i];
-            const palpite = palpites[i];
-            let status = "";
-            if(palpite.semPalpite) {
-                status = "🚫 Sem palpite";
-            } else if(palpite.tipo) {
-                status = getPalpiteTexto(palpite, jogo);
-                completos++;
-            } else {
-                status = "⏳ Aguardando palpite";
-            }
-            linhas.push(`${jogo.timeCasa} vs ${jogo.timeFora} → ${status}`);
+        for(let i = 0; i < jogosData.length; i++) {
+            const j = jogosData[i];
+            const p = palpites[i];
+            if(!p.semPalpite && p.vencedor !== null) definidos++;
+            let texto = `${j.casa} x ${j.fora} → ${getPalpiteDisplay(i)}`;
+            linhas.push(texto);
         }
-        const totalSem = palpites.filter(p => p.semPalpite).length;
-        const header = `✅ Palpites definidos: ${completos} / ${jogosData.length}  |  Sem palpite: ${totalSem}\n`;
+        const sem = palpites.filter(p => p.semPalpite).length;
+        const total = jogosData.length;
+        const header = `✅ Palpites feitos: ${definidos}/${total}  |  🚫 Sem palpite: ${sem}\n`;
         document.getElementById("resumoTexto").innerHTML = header + linhas.join("\n");
     }
 
-    function renderizarJogos() {
+    function renderJogos() {
         const container = document.getElementById("jogosContainer");
-        if(!container) return;
         container.innerHTML = "";
         
-        for(let idx = 0; idx < jogosData.length; idx++) {
-            const jogo = jogosData[idx];
-            const palpiteAtual = palpites[idx];
+        for(let i = 0; i < jogosData.length; i++) {
+            const jogo = jogosData[i];
+            const palpiteAtual = palpites[i];
             
             const card = document.createElement("div");
             card.className = "card-jogo";
@@ -389,42 +386,55 @@
             grupoSpan.className = "grupo-badge";
             grupoSpan.innerText = jogo.grupo;
             
-            // Nomes dos times
+            // Times
             const nomesDiv = document.createElement("div");
             nomesDiv.className = "jogo-nomes";
-            nomesDiv.innerHTML = `<span class="time">${jogo.timeCasa}</span><span class="vs">VS</span><span class="time">${jogo.timeFora}</span>`;
+            nomesDiv.innerHTML = `
+                <span class="time-nome">${jogo.casa}</span>
+                <span class="vs-pequeno">VS</span>
+                <span class="time-nome">${jogo.fora}</span>
+            `;
             
-            // Opções de palpite
+            // Botões
             const opcoesDiv = document.createElement("div");
             opcoesDiv.className = "opcoes-palpite";
             
-            const criarOpcao = (valor, texto, extraClass = "") => {
-                const btn = document.createElement("div");
-                btn.className = `opcao-btn ${extraClass}`;
-                btn.innerText = texto;
-                btn.setAttribute("data-opcao", valor);
-                if(!palpiteAtual.semPalpite && palpiteAtual.tipo === valor) {
-                    btn.classList.add("selected");
-                }
-                btn.addEventListener("click", () => {
-                    if(palpiteAtual.semPalpite) return;
-                    // Remove selected de todos os botoes desta opcoesDiv
-                    Array.from(opcoesDiv.children).forEach(child => child.classList.remove("selected"));
-                    btn.classList.add("selected");
-                    palpites[idx].tipo = valor;
-                    palpites[idx].semPalpite = false;
-                    // garantir que checkbox sem palpite desmarque
-                    const checkSem = card.querySelector(".check-sem-palpite");
-                    if(checkSem) checkSem.checked = false;
-                    salvarPalpitesLocal();
-                    atualizarResumo();
-                });
-                return btn;
+            const btnCasa = document.createElement("div");
+            btnCasa.className = "opcao-btn";
+            btnCasa.innerText = `🏠 ${jogo.casa.substring(0,14)}`;
+            if(palpiteAtual.vencedor === "casa" && !palpiteAtual.semPalpite) btnCasa.classList.add("selected");
+            
+            const btnEmpate = document.createElement("div");
+            btnEmpate.className = "opcao-btn opcao-empate";
+            btnEmpate.innerText = "🤝 EMPATE";
+            if(palpiteAtual.vencedor === "empate" && !palpiteAtual.semPalpite) btnEmpate.classList.add("selected");
+            
+            const btnFora = document.createElement("div");
+            btnFora.className = "opcao-btn";
+            btnFora.innerText = `✈️ ${jogo.fora.substring(0,14)}`;
+            if(palpiteAtual.vencedor === "fora" && !palpiteAtual.semPalpite) btnFora.classList.add("selected");
+            
+            // lógica de clique
+            const setPalpite = (tipo) => {
+                if(palpiteAtual.semPalpite) return;
+                palpites[i].vencedor = tipo;
+                palpites[i].semPalpite = false;
+                // atualizar visual
+                [btnCasa, btnEmpate, btnFora].forEach(btn => btn.classList.remove("selected"));
+                if(tipo === "casa") btnCasa.classList.add("selected");
+                if(tipo === "empate") btnEmpate.classList.add("selected");
+                if(tipo === "fora") btnFora.classList.add("selected");
+                // desmarcar checkbox sem palpite
+                const chk = card.querySelector(".chk-sem-palpite");
+                if(chk) chk.checked = false;
+                saveToStorage();
+                updateResumo();
+                updateStatusText(card, i);
             };
             
-            const btnCasa = criarOpcao("casa", `🏠 ${jogo.timeCasa.substring(0,12)}`, "opcao-casa");
-            const btnEmpate = criarOpcao("empate", "🤝 EMPATE", "opcao-empate");
-            const btnFora = criarOpcao("fora", `✈️ ${jogo.timeFora.substring(0,12)}`, "opcao-fora");
+            btnCasa.onclick = () => setPalpite("casa");
+            btnEmpate.onclick = () => setPalpite("empate");
+            btnFora.onclick = () => setPalpite("fora");
             
             opcoesDiv.appendChild(btnCasa);
             opcoesDiv.appendChild(btnEmpate);
@@ -432,65 +442,43 @@
             
             // Sem palpite
             const semDiv = document.createElement("div");
-            semDiv.className = "sem-palpite";
-            const checkSem = document.createElement("input");
-            checkSem.type = "checkbox";
-            checkSem.className = "check-sem-palpite";
-            checkSem.id = `sem_${idx}`;
-            checkSem.checked = palpiteAtual.semPalpite || false;
+            semDiv.className = "sem-palpite-area";
+            const chkSem = document.createElement("input");
+            chkSem.type = "checkbox";
+            chkSem.className = "chk-sem-palpite";
+            chkSem.id = `sem_${i}`;
+            chkSem.checked = palpiteAtual.semPalpite;
             const labelSem = document.createElement("label");
-            labelSem.htmlFor = `sem_${idx}`;
+            labelSem.htmlFor = `sem_${i}`;
             labelSem.innerText = "🚫 Sem palpite neste jogo";
-            semDiv.appendChild(checkSem);
+            semDiv.appendChild(chkSem);
             semDiv.appendChild(labelSem);
             
-            // status adicional
+            chkSem.onchange = (e) => {
+                const checked = e.target.checked;
+                palpites[i].semPalpite = checked;
+                if(checked) {
+                    palpites[i].vencedor = null;
+                    [btnCasa, btnEmpate, btnFora].forEach(btn => btn.classList.remove("selected"));
+                }
+                saveToStorage();
+                updateResumo();
+                updateStatusText(card, i);
+            };
+            
+            // status extra
             const statusSpan = document.createElement("div");
             statusSpan.className = "status-palpite";
-            function atualizarStatus() {
-                if(palpites[idx].semPalpite) statusSpan.innerText = "⚪ Sem palpite marcado";
-                else if(palpites[idx].tipo) statusSpan.innerText = `Palpite: ${getPalpiteTexto(palpites[idx], jogo)}`;
-                else statusSpan.innerText = "🔘 Selecione um dos botões";
-            }
-            atualizarStatus();
-            
-            // evento do checkbox
-            checkSem.addEventListener("change", (e) => {
-                const isChecked = e.target.checked;
-                palpites[idx].semPalpite = isChecked;
-                if(isChecked) {
-                    palpites[idx].tipo = null;
-                    // desmarcar seleção visual dos botões
-                    Array.from(opcoesDiv.children).forEach(btn => btn.classList.remove("selected"));
-                }
-                salvarPalpitesLocal();
-                atualizarStatus();
-                atualizarResumo();
-            });
-            
-            // também atualizar status quando palpite mudar (já tem nos eventos dos botoes)
-            const observer = () => {
-                atualizarStatus();
-                atualizarResumo();
+            const updateStatusText = () => {
+                if(palpites[i].semPalpite) statusSpan.innerText = "⚪ Sem palpite marcado";
+                else if(palpites[i].vencedor === "casa") statusSpan.innerText = `✅ Palpite: ${jogo.casa}`;
+                else if(palpites[i].vencedor === "fora") statusSpan.innerText = `✅ Palpite: ${jogo.fora}`;
+                else if(palpites[i].vencedor === "empate") statusSpan.innerText = `✅ Palpite: Empate`;
+                else statusSpan.innerText = "🔘 Clique em um time ou EMPATE";
             };
-            // override nos botoes originais? já chamam salvar e resumo, mas vamos adicionar atualizacao de status ali
-            // vamos substituir os eventos originais para manter status.
-            // mas como ja foi adicionado, vou patch nos botoes para chamar atualização extra.
-            const botoes = [btnCasa, btnEmpate, btnFora];
-            botoes.forEach(btn => {
-                const oldClick = btn.onclick;
-                btn.onclick = (e) => {
-                    if(palpites[idx].semPalpite) return;
-                    Array.from(opcoesDiv.children).forEach(c => c.classList.remove("selected"));
-                    btn.classList.add("selected");
-                    palpites[idx].tipo = btn.getAttribute("data-opcao");
-                    palpites[idx].semPalpite = false;
-                    if(checkSem) checkSem.checked = false;
-                    salvarPalpitesLocal();
-                    atualizarStatus();
-                    atualizarResumo();
-                };
-            });
+            const updateStatusTextLocal = () => updateStatusText();
+            window[`updateStatus_${i}`] = updateStatusTextLocal;
+            updateStatusTextLocal();
             
             card.appendChild(grupoSpan);
             card.appendChild(nomesDiv);
@@ -498,89 +486,91 @@
             card.appendChild(semDiv);
             card.appendChild(statusSpan);
             container.appendChild(card);
+            
+            // guardar função de atualização
+            card.updateStatus = updateStatusTextLocal;
         }
-        atualizarResumo();
+        updateResumo();
     }
     
-    // Gerar PDF (agora com texto descritivo: vencedor ou empate)
     async function gerarPDF() {
         const nome = document.getElementById("nomeParticipante").value.trim();
         const email = document.getElementById("emailParticipante").value.trim();
-        if(nome === "" || email === "") {
-            alert("⚠️ Preencha NOME e E-MAIL para gerar o PDF.");
+        if(!nome || !email) {
+            alert("⚠️ Preencha NOME e E-MAIL antes de gerar o PDF.");
             return;
         }
-        salvarUsuarioLocal();
+        saveUser();
         
         const now = new Date();
-        const dataStr = now.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
+        const dataHora = now.toLocaleString("pt-BR");
+        let linhas = "";
+        let palpitesFeitos = 0;
         
-        let linhasTabela = "";
-        let completosCount = 0;
         for(let i=0; i<jogosData.length; i++) {
             const j = jogosData[i];
             const p = palpites[i];
-            let palpiteDesc = "";
+            let palpiteTexto = "";
             if(p.semPalpite) {
-                palpiteDesc = "🚫 Sem palpite";
-            } else if(p.tipo === "casa") {
-                palpiteDesc = `🏆 ${j.timeCasa}`;
-                completosCount++;
-            } else if(p.tipo === "fora") {
-                palpiteDesc = `🏆 ${j.timeFora}`;
-                completosCount++;
-            } else if(p.tipo === "empate") {
-                palpiteDesc = "🤝 Empate";
-                completosCount++;
+                palpiteTexto = "🚫 Sem palpite";
+            } else if(p.vencedor === "casa") {
+                palpiteTexto = `🏆 ${j.casa}`;
+                palpitesFeitos++;
+            } else if(p.vencedor === "fora") {
+                palpiteTexto = `🏆 ${j.fora}`;
+                palpitesFeitos++;
+            } else if(p.vencedor === "empate") {
+                palpiteTexto = "🤝 Empate";
+                palpitesFeitos++;
             } else {
-                palpiteDesc = "❌ Não informado";
+                palpiteTexto = "❌ Não informado";
             }
-            linhasTabela += `
-                <tr style="border-bottom:1px solid #ddd;">
-                    <td style="padding:8px; font-size:11px;">${j.grupo}</td>
-                    <td style="padding:8px;">${j.timeCasa} 🆚 ${j.timeFora}</td>
-                    <td style="padding:8px; text-align:center; font-weight:bold;">${palpiteDesc}</td>
+            linhas += `
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 8px; font-size: 11px;">${j.grupo}</td>
+                    <td style="padding: 8px;">${j.casa} 🆚 ${j.fora}</td>
+                    <td style="padding: 8px; text-align: center; font-weight: bold;">${palpiteTexto}</td>
                 </tr>
             `;
         }
-        const totalSem = palpites.filter(p => p.semPalpite).length;
         
-        const pdfHtml = `
-            <div style="font-family: 'Segoe UI', Arial, sans-serif; width:100%; background: white; padding: 20px;">
-                <div style="text-align: center; border-bottom: 3px solid #ffcc00; margin-bottom: 20px;">
-                    <h1 style="color: #1f3b2c;">🏆 BOLÃO COPA 2026 - 1ª RODADA</h1>
+        const totalSem = palpites.filter(p => p.semPalpite).length;
+        const htmlPDF = `
+            <div style="font-family: 'Segoe UI', Arial; width: 100%; background: white; padding: 25px; border-radius: 16px;">
+                <div style="text-align: center; border-bottom: 3px solid #ffcc00; padding-bottom: 12px; margin-bottom: 18px;">
+                    <h1 style="color: #1f3b2c; margin:0;">🏆 BOLÃO COPA 2026 - 1ª RODADA</h1>
                     <p><strong>Participante:</strong> ${nome} (${email})</p>
-                    <p><strong>Data:</strong> ${dataStr}</p>
-                    <p><strong>Regra:</strong> Palpite no VENCEDOR ou EMPATE</p>
+                    <p><strong>Gerado em:</strong> ${dataHora}</p>
+                    <p><strong>Modalidade:</strong> Palpite no VENCEDOR ou EMPATE</p>
                 </div>
-                <div style="margin: 10px 0; background:#f4f0e0; padding: 8px; border-radius: 16px; text-align:center;">
-                    ✅ Palpites realizados: ${completosCount} / ${jogosData.length} &nbsp;&nbsp;| 🚫 Sem palpite: ${totalSem}
+                <div style="background: #f4f0e0; padding: 8px 12px; border-radius: 20px; margin-bottom: 18px; text-align:center;">
+                    ✅ Palpites definidos: ${palpitesFeitos} / ${jogosData.length} &nbsp;| 🚫 Sem palpite: ${totalSem}
                 </div>
-                <table style="width:100%; border-collapse: collapse; margin-top: 12px;">
+                <table style="width:100%; border-collapse: collapse;">
                     <thead>
-                        <tr><th style="background:#ffcc00; padding:10px; text-align:left;">Grupo</th>
-                            <th style="background:#ffcc00; padding:10px; text-align:left;">Jogo</th>
-                            <th style="background:#ffcc00; padding:10px; text-align:center;">Palpite (Vencedor/Empate)</th>
+                        <tr><th style="background:#ffcc00; padding: 8px; text-align:left;">Grupo</th>
+                            <th style="background:#ffcc00; padding: 8px; text-align:left;">Jogo</th>
+                            <th style="background:#ffcc00; padding: 8px; text-align:center;">Palpite</th>
                         </tr>
                     </thead>
-                    <tbody>${linhasTabela}</tbody>
+                    <tbody>${linhas}</tbody>
                 </table>
-                <div style="margin-top: 30px; text-align: center; font-size: 10px; color: gray; border-top: 1px solid #ccc; padding-top: 12px;">
-                    Documento gerado pelo Bolão Amigos • Copa do Mundo 2026 • 1ª Rodada • Palpite simples
+                <div style="margin-top: 25px; text-align: center; font-size: 9px; color: gray; border-top: 1px solid #ccc; padding-top: 12px;">
+                    Documento gerado pelo Bolão Amigos • Copa do Mundo 2026 • 1ª Rodada • Vencedor/Empate
                 </div>
             </div>
         `;
         
-        const previewDiv = document.createElement("div");
-        previewDiv.style.position = "fixed";
-        previewDiv.style.top = "-9999px";
-        previewDiv.style.left = "-9999px";
-        previewDiv.style.background = "white";
-        previewDiv.innerHTML = pdfHtml;
-        document.body.appendChild(previewDiv);
+        const tempDiv = document.createElement("div");
+        tempDiv.style.position = "fixed";
+        tempDiv.style.top = "-9999px";
+        tempDiv.style.left = "-9999px";
+        tempDiv.style.background = "white";
+        tempDiv.innerHTML = htmlPDF;
+        document.body.appendChild(tempDiv);
         
         try {
-            const element = previewDiv.firstChild;
+            const element = tempDiv.firstChild;
             const canvas = await html2canvas(element, { scale: 2, backgroundColor: "#ffffff" });
             const imgData = canvas.toDataURL("image/png");
             const { jsPDF } = window.jspdf;
@@ -600,37 +590,23 @@
                     position -= pageHeight;
                 }
             }
-            const nomeArquivo = `bolao_${nome.replace(/[^a-z0-9]/gi, '_')}_rodada1_vencedor.pdf`;
-            pdf.save(nomeArquivo);
+            const fileName = `bolao_${nome.replace(/[^a-z0-9]/gi, '_')}_rodada1.pdf`;
+            pdf.save(fileName);
         } catch(err) {
             console.error(err);
             alert("Erro ao gerar PDF. Tente novamente.");
         } finally {
-            document.body.removeChild(previewDiv);
+            document.body.removeChild(tempDiv);
         }
-    }
-    
-    function bindEvents() {
-        const nomeInput = document.getElementById("nomeParticipante");
-        const emailInput = document.getElementById("emailParticipante");
-        nomeInput.addEventListener("input", salvarUsuarioLocal);
-        emailInput.addEventListener("input", salvarUsuarioLocal);
-        document.getElementById("btnGerarPDF").addEventListener("click", gerarPDF);
     }
     
     function init() {
-        carregarPalpitesLocal();
-        carregarUsuarioLocal();
-        renderizarJogos();
-        bindEvents();
-        // Garantir que o resumo tenha o elemento correto
-        if(!document.getElementById("resumoTexto")) {
-            const el = document.getElementById("resumoText");
-            if(el) el.id = "resumoTexto";
-        } else {
-            document.getElementById("resumoTexto").id = "resumoTexto";
-        }
-        atualizarResumo();
+        loadFromStorage();
+        loadUser();
+        renderJogos();
+        document.getElementById("btnGerarPDF").addEventListener("click", gerarPDF);
+        document.getElementById("nomeParticipante").addEventListener("input", saveUser);
+        document.getElementById("emailParticipante").addEventListener("input", saveUser);
     }
     
     init();
